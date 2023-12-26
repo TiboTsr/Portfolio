@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio de Tibo Tessier</title>
+  <link rel="stylesheet" href="styleV2.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="icon" href="../V2/img/logo1.png">
+</head>
+
+<body>
+  <header class="header-fr" style="display: flex;">
+    <a href="#accueil" class="logo" style="color:  #ededed;">Tibo.T</a>
+
+    <nav class="navbar">
+      <a href="#accueil" class="active">Accueil</a>
+      <a href="#présentation" class="">Ma présentation</a>
+      <a href="#competences" class="">Mes compétences</a>
+      <a href="#projet" class="">Mes projets</a>
+      <a href="#contact" class="">Me contacter</a>
+    </nav>
+  </header>
+  <header class="header-en" style="display: none;">
+    <a href="#accueil" class="logo" style="color:  #ededed;">Tibo.T</a>
+
+    <nav class="navbar">
+      <a href="#home" class="active">Home</a>
+      <a href="#presentation" class="">My presentation</a>
+      <a href="#skills" class="">My skills</a>
+      <a href="#project" class="">My projetcs</a>
+      <a href="#contacts" class="">Contact me</a>
+    </nav>
+  </header>
+  <div id="language-buttons" class="fixed-buttons">
+    <button id="lang-fr" class="language-button"><img src="../V2/img/FR.png"></button>
+    <button id="lang-en" class="language-button"><img src="../V2/img/EN.png"></button>
+  </div>
+  <div id="popup" class="popup">
+    <p>⚠ La page n'est pas encore totalement développée et risque de présenter des bugs pour ce type
+      d'appareil. ⚠<br>
+      ⚠ La page est tout juste en cours de création soyez indugent ⚠ <br>
+      ⚠ Je travaille activement afin de prendre en charge tous types d'appareils ⚠<br>
+      ⚠ Merci de votre patience ⚠</p>
+    <button id="fermerPopup">Fermer</button>
+  </div>
+  <section class="home-fr" id="accueil">
+    <div class="home-content" style="display: block;">
+      <h1>Salut je suis Tibo Tessier</h1>
+      <h3>Bienvenue sur mon portfolio</h3>
+      <p>N"hesitez pas à visiter ma page de projet ou à me contacter pour en savoir plus<br>
+        sur mes projets ou pour discuter de vos idées.</p>
+      <div class="btn-box">
+        <a href="#projet">Mes projets</a>
+        <a href="#contact">Me contacter</a>
+      </div>
+    </div>
+    <div class="home-reseaux">
+      <a href="https://www.instagram.com/tibo.tsr" target="_blank"><i class='bx bxl-instagram bx-tada'></i></a>
+      <a href="https://www.github.com/tibotsr" target="_blank"><i class='bx bxl-github bx-tada'></i></a>
+      <a href="https://discord.com/users/476420730989445130" target="_blank"><i
+          class='bx bxl-discord-alt bx-tada'></i></a>
+      <a href="https://linktr.ee/tibotsr" target="_blank"><i class='bx bx-link-alt bx-tada'></i></a>
+    </div>
+  </section>
+  <section class="home-en" id="home" style="display: none;">
+    <div class="home-content">
+      <h1>Hi I'm Tibo Tessier</h1>
+      <h3>Welcome to my portfolio</h3>
+      <p>Feel free to visit my project page or contact me to learn more<br>
+        on my projects or to discuss your ideas.</p>
+      <div class="btn-box">
+        <a href="#projet">My projects</a>
+        <a href="#contact">Contact me</a>
+      </div>
+    </div>
+    <div class="home-reseaux">
+      <a href="https://www.instagram.com/tibo.tsr" target="_blank"><i class='bx bxl-instagram bx-tada'></i></a>
+      <a href="https://www.github.com/tibotsr" target="_blank"><i class='bx bxl-github bx-tada'></i></a>
+      <a href="https://discord.com/users/476420730989445130" target="_blank"><i
+          class='bx bxl-discord-alt bx-tada'></i></a>
+      <a href="https://linktr.ee/tibotsr" target="_blank"><i class='bx bx-link-alt bx-tada'></i></a>
+    </div>
+  </section>
+  <!--Section présentation-->
+  <section class="presentation-fr" id="présentation" style="display: block; padding-top: 24px;">
+    <h2 class="heading">Ma Présentation</h2>
+
+    <div class="about-img">
+      <img src="../V2/img/user.png">
+    </div>
+
+    <div class="about-content">
+      <h3>Voici une petite présentation pour apprendre à me connaitre :</h3>
+      <p>Salut, moi c'est Tibo Tessier, un lycéen de terminale générale basé en France, vers Angers plus présisement.
+      </p>
+      <p>Je suis passionné par tout ce qui touche à l'informatique.</p>
+      <p>Je suis également déterminé à faire de l'informatique ma carrière future.</p>
+
+      <p style="margin-top: 15px;">Mon parcours en informatique est pour le moment marqué par de petits projets
+        individuels ou en groupe ainsi qu'une volonté d'apprendre en permanence.</p>
+      <p>Vous retrouverez en détail la majorité de mes projets <a href="#projet">ici</a>.</p>
+
+      <h2>En dehors de l'informatique, voici ce que vous devez savoir à mon sujet :</h2>
+      <ul>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>J'ai un esprit curieux qui aime apprendre
+          de nouvelles choses dans les domaines qui m'intéressent.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>J'aime bien faire et regarder le sport
+          notamment le vélo et le football.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Jouer aux jeux vidéos fais partie de mes
+          activités préférées</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Quand je suis lancé dans un projet, je
+          fais tout pour arriver à faire ce qui me semble le mieux.</li>
+
+      </ul>
+
+      <h1>D'autres informations :</h1>
+      <ul>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Je possède le brevet des collèges (mention
+          bien) ainsi que le code de la route, je suis actuellement en conduite accompagnée.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Je réalise le permis citoyen avec une
+          association locale.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Je parle français, j'étudie l'anglais et
+          l'espagnol.</li>
+
+
+      </ul>
+
+      <h2>En termes d'environnement de travail :</h2>
+      <p>Je suis à l'aise sur Windows et je suis un utilisateur qui aime travailler avec GitHub et le Markdown.</p>
+      <p>Mon outil préféré pour la programmation est bien sûr Visual Studio Code, où je mets en œuvre idées et projets.
+      </p>
+
+      <p style="margin-top: 15px;">Je suis impatient de continuer à explorer le monde de l'informatique, d'apprendre de
+        nouvelles technologies<br>
+        et de collaborer avec d'autres passionnés comme vous. </p>
+      <p>N'hésitez pas à me contacter si vous avez des questions, des suggestions ou si vous souhaitez simplement
+        échanger sur <br>
+        des sujets liés à l'informatique 👨‍💻
+        à l'aide de <a href="#contact">cette page</a>.</p>
+
+      <!--<div class="btn-box btns">
+                <a href="#" class="btn">Voir Plus</a>
+            </div>-->
+    </div>
+  </section>
+
+  </section>
+  <section class="presentation-en" id="presentation" style="display: none; padding-top: 24px;">
+    <h2 class="heading">My Presentation</h2>
+
+    <div class="about-img">
+      <img src="../V2/img/user.png">
+    </div>
+
+    <div class="about-content">
+      <h3>Here's a brief introduction to get to know me:</h3>
+      <p>Hi, I'm Tibo Tessier, a high school senior based in France, near Angers to be more precise.</p>
+      <p>I'm passionate about everything related to computer science.</p>
+      <p>I'm also determined to make computer science my future career.</p>
+
+      <p style="margin-top: 15px;">My journey in computer science is currently marked by small individual or group
+        projects
+        and a constant desire to learn.</p>
+      <p>You can find detailed information about most of my projects <a href="#projet">here</a>.</p>
+
+      <h2>Outside of computer science, here's what you need to know about me:</h2>
+      <ul>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>I have a curious mind that enjoys learning
+          new things in the fields that interest me.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>I enjoy both participating in and watching
+          sports, especially cycling and football.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>Playing video games is one of my favorite
+          activities.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>When I embark on a project, I do
+          everything
+          to achieve what seems best to me.</li>
+      </ul>
+
+      <h1>Additional Information:</h1>
+      <ul>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>I hold the brevet des collèges (with
+          honors)
+          as well as a driving license, and I am currently in accompanied driving.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>I am involved in the "permis citoyen" with
+          a
+          local association.</li>
+        <li><i class='bx bxs-chevron-right bx-fade-left bx-flip-vertical'></i>I speak French, study English and Spanish.
+        </li>
+      </ul>
+
+      <h2>In terms of work environment:</h2>
+      <p>I am comfortable with Windows, and I am a user who enjoys working with GitHub and Markdown.</p>
+      <p>My favorite tool for programming is, of course, Visual Studio Code, where I implement ideas and projects.</p>
+
+      <p style="margin-top: 15px;">I am eager to continue exploring the world of computer science, learning new
+        technologies,<br>
+        and collaborating with other enthusiasts like you.</p>
+      <p>Feel free to contact me if you have any questions, suggestions, or if you just want to discuss<br>
+        topics related to computer science 👨‍💻 using <a href="#contact">this page</a>.</p>
+
+      <!--<div class="btn-box btns">
+                <a href="#" class="btn">See More</a>
+            </div>-->
+    </div>
+  </section>
+
+  <!--Section Compétences-->
+  <section class="skills-fr" id="compétences" style="display: block;">
+    <div id="competences">‎</div>
+    <h2 class="heading">Mes compétences</h2>
+
+    <div class="skills-row">
+      <div class="skills-collums">
+        <h3 class="title">Compétences Programmation :</h3>
+
+        <div class="skills-box">
+          <div class="tableau">
+            <div class="skills-content">
+              <div class="progression">
+                <h3>HTML<i class='bx bxl-html5 bx-tada' style="color: #f12704; font-size: 30px;"></i><span
+                    style="margin-left: auto;">40%</span></h3>
+                <div class="bar"><span style="width: 40%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>CSS<i class='bx bxl-css3 bx-tada' style="color: rgb(9, 69, 235); font-size: 30px;"></i><span
+                    style="margin-left: auto;">35%</span></h3>
+                <div class="bar"><span style="width: 35%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>Python<i class='bx bxl-python bx-tada' style="color: rgb(0, 139, 194); font-size: 30px;"></i><span
+                    style="margin-left: auto;">40%</span></h3>
+                <div class="bar"><span style="width: 40%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>JavaScript<i class='bx bxl-javascript bx-tada'
+                    style="color: rgb(255, 217, 0); font-size: 30px;"></i><span style="margin-left: auto;">15%</span>
+                </h3>
+                <div class="bar"><span style="width: 15%;"></span></div>
+              </div>
+            </div>
+          </div>
+          <h3 class="title-2" style="padding-top: 3rem;">Autres compétences :</h3>
+
+          <div class="tableau" style="padding-top: 1rem;">
+            <div class="skills-content">
+              <h3 style="font-size: 15px" align="center">En dehors des languages de programmation que je suis déjà
+                entrain d'expérimenter, j'aimerais me lancer dans l'apprentisage des languages de programmation
+                suivants: </h3>
+              <ul style="list-style: none; line-height: 30px; ;">
+                <li>Approfondir mes bases en JavaScript<i class='bx bxl-javascript'
+                    style="color: rgb(255, 217, 0); font-size: 30px;"></i></li>
+                <li>Commencer à apprendre le C/C++<i class='bx bxl-c-plus-plus'
+                    style="color: rgb(0, 68, 255); font-size: 30px;"></i></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="skills-en" id="skills" style="display: none;">
+    <div id="competences">‎</div>
+    <h2 class="heading">My Skills</h2>
+
+    <div class="skills-row">
+      <div class="skills-columns">
+        <h3 class="title">Programming Skills:</h3>
+
+        <div class="skills-box">
+          <div class="tableau">
+            <div class="skills-content">
+              <div class="progression">
+                <h3>HTML<i class='bx bxl-html5 bx-tada' style="color: #f12704; font-size: 30px;"></i><span
+                    style="margin-left: auto;">40%</span></h3>
+                <div class="bar"><span style="width: 40%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>CSS<i class='bx bxl-css3 bx-tada' style="color: rgb(9, 69, 235); font-size: 30px;"></i><span
+                    style="margin-left: auto;">35%</span></h3>
+                <div class="bar"><span style="width: 35%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>Python<i class='bx bxl-python bx-tada' style="color: rgb(0, 139, 194); font-size: 30px;"></i><span
+                    style="margin-left: auto;">40%</span></h3>
+                <div class="bar"><span style="width: 40%;"></span></div>
+              </div>
+
+              <div class="progression">
+                <h3>JavaScript<i class='bx bxl-javascript bx-tada'
+                    style="color: rgb(255, 217, 0); font-size: 30px;"></i><span style="margin-left: auto;">15%</span>
+                </h3>
+                <div class="bar"><span style="width: 15%;"></span></div>
+              </div>
+            </div>
+          </div>
+          <h3 class="title-2" style="padding-top: 3rem;">Other Skills:</h3>
+
+          <div class="tableau" style="padding-top: 1rem;">
+            <div class="skills-content">
+              <h3 style="font-size: 15px" align="center">In addition to the programming languages I am already
+                experimenting with, I would like to delve into learning the following programming languages:</h3>
+              <ul style="list-style: none; line-height: 30px; ;">
+                <li>Deepen my foundations in JavaScript<i class='bx bxl-javascript'
+                    style="color: rgb(255, 217, 0); font-size: 30px;"></i></li>
+                <li>Start learning C/C++<i class='bx bxl-c-plus-plus'
+                    style="color: rgb(0, 68, 255); font-size: 30px;"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="projets-fr" id="projet" style="display: flex; ">
+    <h3 class="title" style="padding-top: 20px;">Mes projets :</h3>
+
+    <div class="tableau" style="padding-top: 1rem;">
+      <div class="projets-content">
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">Mon Premier Site HTML</h4>
+          <p>Projet de première en NSI réalisé sur le thème de la marque voiture électrique Tesla.</p>
+
+          <p>L'objectif initial de ce premier projet était de concevoir un site web sur un thème prédéfini, en
+            l'occurrence la marque Tesla. Le projet était soumis à des contraintes spécifiques, notamment l'intégration
+            de JavaScript, la création d'un formulaire, et l'utilisation de tableaux, entre autres.</p>
+
+          <p>Le site propose les fonctionnalités suivantes :</p>
+          <ul style="list-style: none; line-height: 25px; padding-left: 0;">
+            <li>• Une navbar verticale moderne</li>
+            <li>• Des interactions JavaScript avec l'utilisateur</li>
+            <li>• Des informations sur les différentes voitures de la marque Tesla</li>
+          </ul>
+
+          <p>Pour consulter le résultat final du projet, cliquez <a href="https://tesla.tibotsr.repl.co"
+              target="_blank">ici</a>.</p>
+
+          <p>Vous pouvez consulter le code source complet du site directement sur mon <a
+              href="https://github.com/TiboTsr" target="_blank">GitHub</a> ou en cliquant sur le répertoire GitHub
+            si-dessous.</p>
+          <a href="https://github.com/TiboTsr/website-tesla-nsi/tree/main" target="_blank"><img
+              src="../V2/img/tesla_repositories.PNG" style="border-radius: 15px;"></a>
+          <div style="position: relative; text-align: center;">
+            <img src="../V2/img/accueil.PNG" style="width: 40%; margin-top: 20px;" alt="Page d'accueil du site">
+            <p style="margin-top: 15px;">Voici un apercue de la page d'accueil du site</p>
+          </div>
+        </div>
+
+
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">Générateur de QR Code en Python</h4>
+          <p>Projet réalisé dans le cadre de mon portfolio, le générateur de QR Code en Python offre une solution simple
+            et efficace pour créer des codes QR personnalisés.</p>
+
+          <p>L'objectif initial de ce projet était de développer un outil polyvalent permettant la génération de QR
+            codes avec des fonctionnalités avancées, le tout en utilisant le langage de programmation Python.</p>
+
+          <p>Cet outil propose les fonctionnalités suivantes :</p>
+          <ul style="list-style: none; line-height: 22px; padding-left: 0;">
+            <li>• Personnalisation avancée des QR codes (taille, version, couleur, etc.)</li>
+            <li>• Prise en charge de divers types de données (texte, URL, etc.)</li>
+            <li>• Téléchargement facile des QR codes générés</li>
+            <li>• Interface utilisateur en ligne de commande</li>
+            <li>• Enregistrement automatique dans le dossier de téléchargement</li>
+          </ul>
+
+          <p>Pour télécharger la dernière version de l'outil, rendez-vous sur la page des <a
+              href="https://github.com/TiboTsr/generateur-QRcode/releases" target="_blank">versions disponibles</a>.</p>
+
+          <h5 style="text-decoration: underline;">Nouveautés de la version 7</h5>
+          <ul style="list-style: none; line-height: 25px; padding-left: 0;">
+            <li>• Langue sélectionnable (français ou anglais)</li>
+            <li>• Niveaux de difficulté pour une personnalisation adaptée à tous</li>
+            <li>• Validation des couleurs améliorée</li>
+            <li>• Enregistrement automatique optimisé</li>
+            <li>• Corrections et améliorations diverses</li>
+          </ul>
+
+          <p>Explorez les différents fichiers du générateur de QR Code en visitant <a
+              href="https://github.com/TiboTsr/generateur-QRcode" target="_blank">ma page GitHub</a>.</p>
+
+          <a href="https://github.com/TiboTsr/generateur-QRcode" target="_blank"><img
+              src="../V2/img/gen_qr_repositories.PNG" style="border-radius: 15px;"></a>
+          <div style="position: relative; text-align: center;">
+            <p style="margin-top: 15px;">Voici pour l'instant la seule interface utilisateur (utilisé avec le command
+              prompt) utilisable avec l'executable : </p>
+            <img src="../V2/img/qrcode_utilisation.PNG" style="width: 90%; margin-top: 20px;"
+              alt="Aperçu de la page d'accueil">
+            <p style="margin-top: 15px;">Le fichier est directement enregistré dans le dossier téléchargement de votre
+              ordinateur.</p>
+          </div>
+
+        </div>
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">Et de nombreux autres petits projets...</h4>
+          <p>Comme: Un mastermind, un jeu de dés, un juste prix et encore pleins d'autres.</p>
+          <p>--------------------------------------------------------------</p>
+          <h4>Le dernier projet sur lequel j'ai travaillé :</h4>
+          <p>est une application web developpé a l'aide de Flask, Flask etant un micro framework open-source de
+            développement web en Python. </p>
+          <p>Cette application web permettra a l'utilisateur de visionner la météo d'un lieu choisis directement sur
+            l'application.</p>
+          <p>Seule contrainte pour le moment, l'utilisateur doit saisir une clé API pour utiliser l'outil</p>
+          <h4>Quelques visuels arrivent tres bientot.</h4>
+          <h4><a href="https://github.com/tibotsr" target="_blank"
+            style="text-decoration: underline; font-size: 15px;"></a> pourrez egalement retrouver le code source de ce
+            site directement sur GitHub</h4>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="projets-en" id="project" style="display: none;">
+    <h3 class="title" style="padding-top: 20px;">My Projects:</h3>
+
+    <div class="tableau" style="padding-top: 1rem;">
+      <div class="projets-content">
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">My First HTML Website</h4>
+          <p>First project in digital sciences computer science realized on the theme of the electric car brand Tesla.
+          </p>
+
+          <p>The initial objective of this first project was to design a website on a predefined theme, namely the Tesla
+            brand. The project was subject to specific constraints, including the integration of JavaScript, the
+            creation
+            of a form, and the use of tables, among others.</p>
+
+          <p>The site offers the following features:</p>
+          <ul style="list-style: none; line-height: 25px; padding-left: 0;">
+            <li>• A modern vertical navbar</li>
+            <li>• JavaScript interactions with the user</li>
+            <li>• Information about various Tesla car models</li>
+          </ul>
+
+          <p>To check out the final result of the project, click <a href="https://tesla.tibotsr.repl.co"
+              target="_blank">here</a>.</p>
+
+          <p>You can view the complete source code of the site directly on my <a href="https://github.com/TiboTsr"
+              target="_blank">GitHub</a> or by clicking on the GitHub repository
+            below.</p>
+          <a href="https://github.com/TiboTsr/website-tesla-nsi/tree/main" target="_blank"><img
+              src="../V2/img/tesla_repositories.PNG" style="border-radius: 15px;"></a>
+          <div style="position: relative; text-align: center;">
+            <img src="../V2/img/accueil.PNG" style="width: 40%; margin-top: 20px;" alt="Homepage of the site">
+            <p style="margin-top: 15px;">Here is a preview of the homepage of the site</p>
+          </div>
+        </div>
+
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">Python QR Code Generator</h4>
+          <p>Project carried out as part of my portfolio, the Python QR Code generator offers a simple and effective
+            solution for creating customized QR codes.</p>
+
+          <p>The initial objective of this project was to develop a versatile tool allowing the generation of QR codes
+            with
+            advanced features, all using the Python programming language.</p>
+
+          <p>This tool offers the following features:</p>
+          <ul style="list-style: none; line-height: 22px; padding-left: 0;">
+            <li>• Advanced customization of QR codes (size, version, color, etc.)</li>
+            <li>• Support for various types of data (text, URL, etc.)</li>
+            <li>• Easy download of generated QR codes</li>
+            <li>• Command-line user interface</li>
+            <li>• Automatic saving in the download folder</li>
+          </ul>
+
+          <p>To download the latest version of the tool, go to the page of <a
+              href="https://github.com/TiboTsr/generateur-QRcode/releases" target="_blank">available versions</a>.</p>
+
+          <h5 style="text-decoration: underline;">New features in version 7</h5>
+          <ul style="list-style: none; line-height: 25px; padding-left: 0;">
+            <li>• Selectable language (French or English)</li>
+            <li>• Difficulty levels for customized personalization</li>
+            <li>• Improved color validation</li>
+            <li>• Optimized automatic saving</li>
+            <li>• Various corrections and improvements</li>
+          </ul>
+
+          <p>Explore the different files of the QR Code generator by visiting <a
+              href="https://github.com/TiboTsr/generateur-QRcode" target="_blank">my GitHub page</a>.</p>
+
+          <a href="https://github.com/TiboTsr/generateur-QRcode" target="_blank"><img
+              src="../V2/img/gen_qr_repositories.PNG" style="border-radius: 15px;"></a>
+          <div style="position: relative; text-align: center;">
+            <p style="margin-top: 15px;">Here is the only usable user interface for now (used with the command prompt):
+            </p>
+            <img src="../V2/img/qrcode_utilisation.PNG" style="width: 90%; margin-top: 20px;"
+              alt="Preview of the homepage">
+            <p style="margin-top: 15px;">The file is directly saved in the download folder of your computer.</p>
+          </div>
+
+        </div>
+        <div class="projet" style="text-align: center;">
+          <h4 style="text-decoration: underline;">And many other small projects...</h4>
+          <p>Such as: A mastermind, a dice game, a fair price, and many more.</p>
+          <p>--------------------------------------------------------------</p>
+          <h4>The latest project I worked on:</h4>
+          <p>is a web application developed using Flask, Flask being an open-source micro web development framework in
+            Python.</p>
+          <p>This web application will allow the user to view the weather of a chosen location directly on the
+            application.</p>
+          <p>Only constraint for now, the user must enter an API key to use the tool.</p>
+          <h4>Some visuals are coming very soon.</h4>
+          <p>--------------------------------------------------------------</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-fr" id="contact" style="display: block; line-height: 30px; text-align: center;">
+    <h2 class="heading">Me Contacter</h2>
+
+    <div class="contact-content">
+      <p>Vous avez une idée de projet, des questions ou simplement envie de discuter ? N'hésitez pas à me contacter !
+      </p>
+
+      <div class="contact-methods">
+        <p>Pour me joindre :</p>
+        <ul style="list-style: none;">
+          <li><i class='bx bx-mail-send'></i> Envoyez-moi un e-mail à : <a href="mailto:votre.email@gmail.com"
+              target="_blank">tibo.tessier@gmail.com</a></li>
+          <li><i class='bx bxl-discord'></i> Retrouvez-moi sur Discord : <a
+              href="https://discord.com/users/476420730989445130" target="_blank">TiboTsr</a></span></li>
+          <li><i class='bx bxl-github'></i> Retrouver moi sur GitHub également : <a
+              href="https://www.github.com/tibotsr" target="_blank">TiboTsr</a></li>
+        </ul>
+      </div>
+
+      <p>Vous pouvez également me suivre sur les réseaux sociaux :</p>
+      <div class="contact-social" style="font-size: 30px; padding-bottom: 30px;">
+        <a href="https://www.instagram.com/tibo.tsr" target="_blank"><i class='bx bxl-instagram bx-tada'></i></a>
+        <a href="https://www.github.com/tibotsr" target="_blank"><i class='bx bxl-github bx-tada'></i></a>
+        <a href="https://snapchat.com/add/tibo_tsr11" target="_blank"><i class='bx bxl-snapchat bx-tada'></i></a>
+      </div>
+      <div class="count">
+        <p>Vous étiez le  <img src="http://www.mon-compteur.fr/html_c01genv2-240441-3" border="0"
+          style="padding: 0;" /></a>  eme visiteur. Merci ! :)</p>
+      </div>
+    </div>
+  </section>
+  <section class="contact-en" id="contacts" style="display: none; line-height: 30px; text-align: center;">
+    <h2 class="heading">Contact Me</h2>
+
+    <div class="contact-content">
+        <p>Do you have a project idea, questions, or just want to chat? Feel free to reach out to me!</p>
+
+        <div class="contact-methods">
+            <p>To contact me:</p>
+            <ul style="list-style: none;">
+                <li><i class='bx bx-mail-send'></i> Send me an email at: <a href="mailto:your.email@gmail.com"
+                        target="_blank">tibo.tessier@gmail.com</a></li>
+                <li><i class='bx bxl-discord'></i> Find me on Discord: <a
+                        href="https://discord.com/users/476420730989445130" target="_blank">TiboTsr</a></span></li>
+                <li><i class='bx bxl-github'></i> Also find me on GitHub: <a
+                        href="https://www.github.com/tibotsr" target="_blank">TiboTsr</a></li>
+            </ul>
+        </div>
+
+        <p>You can also follow me on social media:</p>
+        <div class="contact-social" style="font-size: 30px; padding-bottom: 30px;">
+            <a href="https://www.instagram.com/tibo.tsr" target="_blank"><i class='bx bxl-instagram bx-tada'></i></a>
+            <a href="https://www.github.com/tibotsr" target="_blank"><i class='bx bxl-github bx-tada'></i></a>
+            <a href="https://snapchat.com/add/tibo_tsr11" target="_blank"><i class='bx bxl-snapchat bx-tada'></i></a>
+        </div>
+        <div class="count">
+            <p>You are the <img src="http://www.mon-compteur.fr/html_c01genv2-240441-3" border="0"
+                    style="padding: 0;" /> visitor. Thank you! :)</p>
+        </div>
+    </div>
+</section>
+  <footer style="text-align: center; background-color: rgb(22, 22, 22);">
+    <p>&copy; 2024 Tessier Tibo. Tous droits réservés.</p>
+  </footer>
+  <script src="scriptV2.js"></script>
+</body>
+
+</html>
