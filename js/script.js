@@ -215,8 +215,17 @@ document.addEventListener("DOMContentLoaded", () => {
         "Connexion sécurisée avec gestion des utilisateurs",
         "Projet orienté écologie et responsabilité environnementale",
       ],
-      link: "#",
-        images: [],
+      link: "prochainement",
+        images: [
+          "./images/AppRecycl1.png",
+          "./images/AppRecycl2.png",
+          "./images/AppRecycl3.png",
+          "./images/AppRecycl4.png",
+          "./images/AppRecycl5.png",
+          "./images/AppRecycl6.png",
+          "./images/AppRecycl7.png",
+          "./images/AppRecycl8.png",
+        ],
     },
     "Morpion JavaFX": {
       desc: "Jeu de morpion développé en Java avec JavaFX, intégrant une interface graphique animée et une logique de jeu structurée.\nLe projet met l’accent sur la programmation orientée objet et une architecture propre facilitant l’évolution du jeu.",
@@ -227,7 +236,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "Projet pédagogique axé sur les bonnes pratiques Java, JavaFX et POO",
       ],
       link: "http://github.com/TiboTsr/IHM-Morpion",
-        images: [],
+        images: [
+          "./images/Morpion1.png",
+          "./images/Morpion2.png",
+          "./images/Morpion3.png",
+          "./images/Morpion4.png",
+        ],
     },
     "Jeu Timeline": {
       desc: "Jeu inspiré du Timeline, où les cartes sont générées dynamiquement à partir de fichiers JSON.\nLe joueur doit placer correctement des événements dans l’ordre chronologique, avec un système de score et de vies.",
@@ -237,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Interaction fluide grâce au drag & drop",
         "Facilité d’ajout de nouveaux decks sans modifier le code",
       ],
-      link: "#",
+      link: "indisponible",
         images: [],
     },
     "Application web Météo": {
@@ -249,8 +263,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "Design responsive adapté au mobiles",
         "Affichage des prévisions sur plusieurs jours",
       ],
-      link: "#",
-        images: [],
+      link: "prochainement",
+        images: [
+          "./images/AppMeteo1.png",
+          "./images/AppMeteo2.png",
+          "./images/AppMeteo3.png",
+          "./images/AppMeteo4.png",
+        ],
     },
     "Bot Discord mise à jour Apple": {
       desc: "Bot Discord automatisé qui surveille les nouvelles mises à jour des appareils Apple et envoie des notifications sur un serveur Discord dès qu’une mise à jour est détectée.",
@@ -261,8 +280,13 @@ document.addEventListener("DOMContentLoaded", () => {
         "Stockage des mises à jour en base de données SQL",
         "Gestion des erreurs et des doublons",
       ],
-      link: "#",
-        images: [],
+      link: "prochainement",
+        images: [
+          "./images/AppleBot1.png",
+          "./images/AppleBot2.png",
+          "./images/AppleBot3.png",
+          "./images/AppleBot4.png",
+        ],
     },
   };
 
@@ -309,10 +333,27 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((t) => `<span class="pill">${t}</span>`)
       .join(" ");
     mPoints.innerHTML = data.points.map((p) => `<li>${p}</li>`).join("");
-    mLinks.innerHTML =
-      data.link && data.link !== "#"
-        ? `<a class="btn btn-primary" target="_blank" href="${data.link}"><i class="fas fa-external-link-alt"></i> Voir le projet</a>`
-        : "";
+    const linkValue = (data.link || "").trim();
+    const normalizedLink = linkValue.toLowerCase();
+
+    if (!linkValue || linkValue === "#") {
+      mLinks.innerHTML = "";
+      return;
+    }
+
+    if (normalizedLink === "indisponible" || normalizedLink === "non disponible") {
+      mLinks.innerHTML =
+        '<button class="btn btn-unavailable" type="button" disabled><i class="fas fa-ban"></i> Lien du projet indisponible</button>';
+      return;
+    }
+
+    if (normalizedLink === "prochainement" || normalizedLink === "bientot" || normalizedLink === "bientôt") {
+      mLinks.innerHTML =
+        '<button class="btn btn-soon" type="button" disabled><i class="fas fa-hourglass-half"></i> Lien du projet disponible prochainement</button>';
+      return;
+    }
+
+    mLinks.innerHTML = `<a class="btn btn-primary" target="_blank" href="${linkValue}"><i class="fas fa-external-link-alt"></i> Voir le projet</a>`;
   };
 
     const renderModalWithCarousel = (data) => {
@@ -321,11 +362,12 @@ document.addEventListener("DOMContentLoaded", () => {
       renderModal(data);
 
       const images = data.images || [];
+      const carouselContainer = document.getElementById("carouselContainer");
       if (images.length > 0) {
+        if (carouselContainer) carouselContainer.style.display = "";
         createCarouselDots(images.length);
         showCarouselImage(0);
       } else {
-        const carouselContainer = document.getElementById("carouselContainer");
         if (carouselContainer) carouselContainer.style.display = "none";
       }
     };
