@@ -31,6 +31,11 @@ body {
   overflow-x: hidden;
 }
 
+/* Prevent horizontal overflow on mobile */
+html {
+  overflow-x: hidden;
+}
+
 /* Background Grille */
 .matrix-grid {
   position: fixed;
@@ -506,18 +511,37 @@ body {
 }
 
 @media (max-width: 768px) {
+  /* Compact, properly centered nav on mobile */
+  .glass-nav {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    transform: none;
+    width: auto;
+    padding: 10px 16px;
+    border-radius: 16px;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+  .nav-toggle {
+    display: flex;
+    width: 32px;
+    height: 32px;
+  }
   .nav-toggle {
     display: flex;
   }
   .nav-links {
     position: absolute;
     top: calc(100% + 10px);
-    right: -30px;
-    left: -30px;
+    right: 0;
+    left: 0;
     background: rgba(10, 10, 10, 0.92);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 12px;
+    padding: 10px 12px;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -533,16 +557,17 @@ body {
     transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   }
   .nav-links.open {
-    max-height: 320px;
+    max-height: 260px;
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
   }
   .nav-link {
-    font-size: 1rem;
+    font-size: 0.95rem;
     display: inline-block;
-    padding: 8px 10px;
+    padding: 8px 12px;
     border-radius: 10px;
+    width: 100%;
   }
   .nav-link.active::after {
     bottom: 0;
