@@ -1,0 +1,539 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tibo TESSIER | Développeur Full Stack</title>
+  <!-- SEO de base -->
+  <meta name="description" content="Portfolio de Tibo Tessier, développeur Full Stack. Projets en Java, PHP, Python, JavaScript, intégration API, bases de données, et outils modernes. Disponible pour stage en avril 2026.">
+  <meta name="author" content="Tibo Tessier">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph (réseaux sociaux) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Tibo TESSIER | Développeur Full Stack">
+  <meta property="og:description" content="Portfolio de Tibo Tessier, développeur Full Stack. Projets, compétences, parcours et contact.">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tibo TESSIER | Développeur Full Stack">
+  <meta name="twitter:description" content="Portfolio de Tibo Tessier, développeur Full Stack. Projets, compétences, parcours et contact.">
+
+  <!-- Performances fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-02S8F983SK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-02S8F983SK");
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="images/icon_portfolio.png">
+</head>
+
+<body>
+  <div class="matrix-grid"></div>
+  <div class="glow-point"></div>
+
+  <div class="loader">
+    <div class="loader-bg">
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+      <div class="loader-particle"></div>
+    </div>
+    <div class="loader-content">
+      <div class="loader-logo">
+        <span class="letter">T</span>
+        <span class="letter">I</span>
+        <span class="letter">B</span>
+        <span class="letter">O</span>
+        <span class="dot">.</span>
+        <span class="letter">T</span>
+        <span class="letter">E</span>
+        <span class="letter">S</span>
+        <span class="letter">S</span>
+        <span class="letter">I</span>
+        <span class="letter">E</span>
+        <span class="letter">R</span>
+      </div>
+      <div class="loader-subtitle">Développeur Full Stack</div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="loader-percentage" id="loaderPercentage">0%</div>
+      <div class="loader-status" id="loaderStatus">Initialisation...</div>
+    </div>
+  </div>
+
+  <nav class="glass-nav">
+    <div class="nav-container">
+      <div class="logo">TT<span>.</span></div>
+      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#accueil" class="nav-link">Accueil</a>
+        <a href="#projets" class="nav-link">Projets</a>
+        <a href="#competences" class="nav-link">Compétences</a>
+        <a href="#about" class="nav-link">À Propos</a>
+        <a href="#parcours" class="nav-link">Parcours</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section id="accueil" class="hero">
+    <canvas id="matrixCanvas"></canvas>
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="1000">
+      <div class="hero-badge" data-aos="fade-down" data-aos-delay="200">
+        💼 Disponible pour Stage • Avril 2026
+      </div>
+      <h1 class="glitch" data-text="TIBO TESSIER" data-aos="zoom-in" data-aos-delay="400">
+        TIBO TESSIER
+      </h1>
+      <p class="subtitle" data-aos="fade-up" data-aos-delay="600">
+        Développeur <span class="gradient-text">Full Stack</span>
+      </p>
+      <p class="hero-description" data-aos="fade-up" data-aos-delay="800">
+        Étudiant BUT Informatique passionné par la création d'applications web
+        modernes et performantes
+      </p>
+      <div class="hero-cta" data-aos="fade-up" data-aos-delay="1000">
+        <a href="#projets" class="btn btn-primary">
+          <i class="fas fa-rocket"></i> Explorer mes projets
+        </a>
+        <a href="#contact" class="btn btn-outline">
+          <i class="fas fa-paper-plane"></i> Me contacter
+        </a>
+      </div>
+    </div>
+    <a href="#projets" class="scroll-down">
+      <span class="chevrons">
+        <i class="fas fa-chevron-down"></i>
+      </span>
+    </a>
+  </section>
+
+  <section id="projets" class="projects">
+    <div class="section-header" data-aos="fade-up">
+      <span class="pre-title">Projets</span>
+      <h2 id="startProjets">Mes Réalisations<span>.</span></h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card" data-aos="fade-up">
+        <div class="card-icon"><i class="fas fa-recycle"></i></div>
+        <h3>Application Tri Web</h3>
+        <p class="tech-tags">PHP • SQL • HTML • CSS</p>
+        <p>Suivi complet du recyclage matériel universitaire.</p>
+        <button class="btn-detail">Voir plus</button>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="card-icon"><i class="fas fa-gamepad"></i></div>
+        <h3>Morpion JavaFX</h3>
+        <p class="tech-tags">Java • JavaFX</p>
+        <p>Architecture POO avec interface graphique réactive.</p>
+        <button class="btn-detail">Voir plus</button>
+      </div>
+      <!--<div class="project-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-icon"><i class="fas fa-hourglass-half"></i></div>
+          <h3>Jeu Timeline</h3>
+          <p class="tech-tags">Java • JSON</p>
+          <p>Manipulation de flux de données JSON et gestion d'états.</p>
+          <button class="btn-detail">Voir plus</button>
+        </div>-->
+      <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="card-icon"><i class="fas fa-cloud-sun"></i></div>
+        <h3>Application web Météo</h3>
+        <p class="tech-tags">Python • Jinja • API • HTML • CSS</p>
+        <p>Intégration d'API tierces et design adaptatif.</p>
+        <button class="btn-detail">Voir plus</button>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="card-icon"><i class="fab fa-apple"></i></div>
+        <h3>Bot Discord mise à jour Apple</h3>
+        <p class="tech-tags">Python • SQL</p>
+        <p>
+          Avertit un serveur d'une nouvelle mise à
+          jour des appareils Apple.
+        </p>
+        <button class="btn-detail">Voir plus</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 id="modalTitle">Titre du Projet</h2>
+      <!-- Carousel -->
+      <div class="carousel-container" id="carouselContainer">
+        <div class="carousel">
+          <img
+            id="carouselImage"
+            src="assets/image-not-found.svg"
+            alt="Projet"
+            class="carousel-image"
+          >
+          <button class="carousel-btn carousel-prev" id="carouselPrev">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="carousel-btn carousel-next" id="carouselNext">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="carousel-dots" id="carouselDots"></div>
+      </div>
+
+      <p id="modalDesc"></p>
+      <div class="modal-tech" id="modalTech"></div>
+      <ul class="modal-points" id="modalPoints"></ul>
+      <div class="modal-links" id="modalLinks"></div>
+    </div>
+  </div>
+
+  <section id="competences" class="skills">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="pre-title">Compétences</span>
+        <h2>Technologies & Outils<span>.</span></h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
+          <div class="category-header">
+            <i class="fas fa-code"></i>
+            <h3>Langages de Programmation</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item"><i class="fab fa-java"></i> Java</div>
+            <div class="tech-item"><i class="fab fa-php"></i> PHP</div>
+            <div class="tech-item"><i class="fab fa-python"></i> Python</div>
+            <div class="tech-item"><i class="fab fa-js"></i> JavaScript</div>
+            <div class="tech-item"><i class="fab fa-html5"></i> HTML</div>
+            <div class="tech-item"><i class="fab fa-css3-alt"></i> CSS</div>
+            <div class="tech-item"><i class="fas fa-terminal"></i> Bash</div>
+            <div class="tech-item"><i class="fas fa-copyright"></i> C</div>
+          </div>
+        </div>
+
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+          <div class="category-header">
+            <i class="fas fa-database"></i>
+            <h3>Bases de Données</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item"><i class="fas fa-database"></i> MySQL</div>
+            <div class="tech-item">
+              <i class="fas fa-server"></i> SQL Server
+            </div>
+            <div class="tech-item"><i class="fas fa-leaf"></i> MongoDB</div>
+            <div class="tech-item">
+              <i class="fas fa-diagram-project"></i> phpmyadmin
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
+          <div class="category-header">
+            <i class="fas fa-layer-group"></i>
+            <h3>Frameworks & Bibliothèques</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item"><i class="fas fa-coffee"></i> JavaFX</div>
+            <div class="tech-item">
+              <i class="fab fa-symfony"></i> Symfony
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="400">
+          <div class="category-header">
+            <i class="fas fa-laptop-code"></i>
+            <h3>Environnements de Développement</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item">
+              <i class="fas fa-brain"></i> IntelliJ IDEA
+            </div>
+            <div class="tech-item"><i class="fas fa-code"></i> VS Code</div>
+            <div class="tech-item"><i class="fas fa-sun"></i> Eclipse</div>
+            <div class="tech-item">
+              <i class="fas fa-terminal"></i> Terminal
+            </div>
+          </div>
+        </div>
+
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="500">
+          <div class="category-header">
+            <i class="fas fa-tools"></i>
+            <h3>Outils & Collaboration</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item"><i class="fab fa-git-alt"></i> Git</div>
+            <div class="tech-item"><i class="fab fa-github"></i> GitHub</div>
+            <div class="tech-item">
+              <i class="fab fa-github"></i> GitHub Desktop
+            </div>
+            <div class="tech-item"><i class="fab fa-docker"></i> Docker</div>
+            <div class="tech-item"><i class="fab fa-figma"></i> Figma</div>
+            <div class="tech-item"><i class="fab fa-trello"></i> Trello</div>
+            <div class="tech-item"><i class="fas fa-cloud"></i> API</div>
+            <div class="tech-item"><i class="fab fa-discord"></i> Bot Discord</div>
+          </div>
+        </div>
+        <div class="skill-category" data-aos="fade-up" data-aos-delay="600">
+          <div class="category-header">
+            <i class="fas fa-project-diagram"></i>
+            <h3>Méthodologies</h3>
+          </div>
+          <div class="tech-items">
+            <div class="tech-item">
+              <i class="fas fa-tasks"></i> AGILE / SCRUM
+            </div>
+            <div class="tech-item"><i class="fas fa-sitemap"></i> UML</div>
+            <div class="tech-item">
+              <i class="fas fa-code-branch"></i> Gestion de projet
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="section-header" data-aos="fade-up">
+      <span class="pre-title">À propos</span>
+      <h2>Qui je suis<span>.</span></h2>
+    </div>
+    <div class="about-wrapper">
+      <div class="about-text" data-aos="fade-right">
+        <p>
+          Je suis Tibo Tessier, étudiant en 2ème année de BUT Informatique à
+          l'IUT de Laval. Passionné par la création de solutions numériques
+          efficaces, je combine rigueur académique et autonomie pour
+          transformer de simples idées en applications fonctionnelles.
+        </p>
+        <p>
+          Actuellement à la recherche d'un
+          <strong>stage en développement Full Stack</strong> pour Avril 2026,
+          j'apporte une expérience solide en gestion de projets AGILE, une
+          maîtrise du cycle développement complet (BD, Back, Front), et une
+          vraie volonté d'apprentissage.
+        </p>
+        <p>
+          <strong>Quelques chiffres :</strong> 120+ heures sur projets
+          professionnels, 4 technologies full stack maîtrisées, 100% des
+          projets livrés en délai.
+        </p>
+      </div>
+      <div class="terminal-container" data-aos="flip-up" data-aos-delay="200">
+        <div class="terminal-header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="t-title">tibo@portfolio:~/about</div>
+        </div>
+        <div class="terminal-body" id="terminalBody"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parcours" class="parcours">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <span class="pre-title">Mon Parcours</span>
+        <h2>Formation & Expériences<span>.</span></h2>
+      </div>
+
+      <div class="parcours-grid">
+        <!-- Formation -->
+        <div class="parcours-section" data-aos="fade-right">
+          <div class="parcours-header">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Formation</h3>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-date">
+                  <i class="fas fa-calendar-alt"></i> 2025 - 2026
+                </div>
+                <h4>BUT Informatique - 2ème année</h4>
+                <p class="timeline-location">
+                  <i class="fas fa-map-marker-alt"></i> IUT de Laval
+                </p>
+                <ul class="timeline-details">
+                  <li>Spécialisation en développement Full Stack</li>
+                  <li>Gestion de projets AGILE et méthodologies SCRUM</li>
+                  <li>Conception de bases de données et développement web</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-date">
+                  <i class="fas fa-calendar-alt"></i> 2024 - 2025
+                </div>
+                <h4>BUT Informatique - 1ère année</h4>
+                <p class="timeline-location">
+                  <i class="fas fa-map-marker-alt"></i> IUT de Laval
+                </p>
+                <ul class="timeline-details">
+                  <li>Fondamentaux de la programmation</li>
+                  <li>Bases de données relationnelles</li>
+                  <li>Développement web front-end et back-end</li>
+                  <li>Gestion de projet, Gantt, Pert</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <div class="timeline-date">
+                  <i class="fas fa-calendar-alt"></i> 2021 - 2024
+                </div>
+                <h4>Baccalauréat Général</h4>
+                <p class="timeline-location">
+                  <i class="fas fa-map-marker-alt"></i> Lycée Jean Moulin,
+                  Angers
+                </p>
+                <ul class="timeline-details">
+                  <li>
+                    Spécialités : Maths et Numériqus et Sciences de
+                    l'Informatique
+                  </li>
+                  <li>Baccalauréat Général mention assez bien</li>
+                  <li>
+                    Certification PIX : <span>530</span> points PIX, code de
+                    verefication : <span>P-JHC47WC8</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Expériences -->
+        <div class="parcours-section" data-aos="fade-left">
+          <div class="parcours-header">
+            <i class="fas fa-briefcase"></i>
+            <h3>Expériences</h3>
+          </div>
+          <div class="experience-card">
+            <div class="experience-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h4>À la recherche de mon premier stage</h4>
+            <p>
+              Je recherche activement un
+              <strong>stage en développement Full Stack</strong>
+              pour mettre en pratique mes compétences techniques.
+            </p>
+            <div class="stage-details">
+              <div class="stage-info">
+                <i class="fas fa-calendar-check"></i>
+                <span><strong>Période :</strong> Avril 2026</span>
+              </div>
+              <div class="stage-info">
+                <i class="fas fa-clock"></i>
+                <span><strong>Durée :</strong> 8 à 12 semaines minimum</span>
+              </div>
+              <div class="stage-info">
+                <i class="fas fa-code"></i>
+                <span><strong>Domaine :</strong> Full Stack</span>
+              </div>
+            </div>
+            <div class="skills-highlight">
+              <p><strong>Ce que j'apporte :</strong></p>
+              <ul>
+                <li>
+                  <i class="fas fa-check"></i> Maîtrise du cycle complet de
+                  développement
+                </li>
+                <li>
+                  <i class="fas fa-check"></i> Expérience en méthodologie
+                  AGILE
+                </li>
+                <li><i class="fas fa-check"></i> Autonomie et rigueur</li>
+                <li>
+                  <i class="fas fa-check"></i> Passion pour l'apprentissage
+                </li>
+              </ul>
+            </div>
+            <p>
+              Vous avez une place pour moi ? N'hésitez pas à
+              <strong>me contacter !</strong>
+            </p>
+            <a href="#contact" class="btn btn-primary">
+              <i class="fas fa-envelope"></i> Me contacter
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="footer">
+    <div class="footer-content">
+      <div class="section-header" data-aos="fade-up">
+        <span class="pre-title">Contact</span>
+        <h2>Prêt à collaborer ?<span></span></h2>
+      </div>
+      <p class="footer-subtitle">
+        Vous avez un projet ou une question ? N'hésitez pas à me contacter !
+      </p>
+      <div class="contact-methods">
+        <div class="contact-item" data-aos="fade-up" data-aos-delay="100">
+          <i class="fas fa-envelope"></i>
+          <a href="mailto:tibo.tessier@gmail.com">tibo.tessier@gmail.com</a>
+        </div>
+        <div class="contact-item" data-aos="fade-up" data-aos-delay="200">
+          <i class="fas fa-phone"></i>
+          <a href="tel:+33772215415">07 72 21 54 15</a>
+        </div>
+      </div>
+      <div class="social-links">
+        <a href="mailto:tibo.tessier@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://github.com/TiboTsr" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/tibotessier" target="_blank" title="LinkedIn"><i
+            class="fab fa-linkedin"></i></a>
+        <a href="CV_Tibo_Tessier.pdf" download="CV_Tibo_Tessier.pdf" title="Télécharger CV">
+          <i class="fas fa-file-pdf"></i>
+        </a>
+      </div>
+      <p class="footer-bottom">
+        &copy; <span id="year">2025</span> Tibo Tessier.
+      </p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
