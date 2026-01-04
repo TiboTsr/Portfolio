@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Stockage des mises à jour en base de données SQL",
         "Gestion des erreurs et des doublons",
       ],
-      link: "prochainement",
+      link: "https://applebot.tibotsr.dev/",
         images: [
           "./images/AppleBot1.png",
           "./images/AppleBot2.png",
