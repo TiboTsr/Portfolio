@@ -43,6 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   ease: "power2.inOut",
                   onComplete: () => {
                     loader.style.display = "none";
+                    // Débloquer le scroll
+                    document.body.classList.remove("no-scroll");
                     // Activer "Accueil" après le loader
                     const firstLink = document.querySelector(
                       '.nav-link[href="#accueil"]'

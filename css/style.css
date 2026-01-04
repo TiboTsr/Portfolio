@@ -31,6 +31,12 @@ body {
   overflow-x: hidden;
 }
 
+/* Bloquer le scroll pendant le chargement */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* Prevent horizontal overflow on mobile */
 html {
   overflow-x: hidden;
