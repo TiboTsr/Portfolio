@@ -1,3 +1,6 @@
+// Bloquer le scroll immédiatement au chargement
+document.body.classList.add("no-scroll");
+
 document.addEventListener("DOMContentLoaded", () => {
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
