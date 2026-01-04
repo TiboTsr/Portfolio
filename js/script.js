@@ -525,4 +525,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
     observer.observe(terminalBody);
   }
+
+  // Contact Form Handler
+  const contactForm = document.getElementById("contactForm");
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(contactForm);
+      const email = formData.get("email");
+      const message = formData.get("message");
+
+      // Validation
+      if (!email || !message) {
+        return; // Let HTML5 validation show the styled error
+      }
+
+      try {
+        const response = await fetch("https://formspree.io/f/mqeawqwq", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            message: message,
+          }),
+        });
+
+        if (response.ok) {
+          showSuccessModal();
+          contactForm.reset();
+        } else {
+          console.error("Erreur lors de l'envoi");
+        }
+      } catch (error) {
+        console.error("Erreur:", error);
+      }
+    });
+  }
 });
+
+// Modal Functions
+function showSuccessModal() {
+  const modal = document.getElementById("successModal");
+  if (modal) {
+    modal.classList.add("active");
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("successModal");
+  if (modal) {
+    modal.classList.remove("active");
+  }
+}
+
+// Close modal when clicking outside
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("successModal");
+  if (modal && e.target === modal) {
+    closeModal();
+  }
+});
+

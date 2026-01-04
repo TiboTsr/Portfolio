@@ -594,7 +594,7 @@
             <a href="tel:+33772215415">07 72 21 54 15</a>
           </div>
         </div>
-        <form class="quick-contact-form" action="https://formspree.io/f/mqeawqwq" method="POST">
+        <form class="quick-contact-form" id="contactForm">
           <div class="form-group">
             <input 
               type="email" 
@@ -615,6 +615,18 @@
           </div>
           <button type="submit" class="btn btn-primary btn-sm">Envoyer</button>
         </form>
+
+        <!-- Success Modal -->
+        <div class="modal" id="successModal">
+          <div class="modal-content success-modal">
+            <div class="modal-header">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Message envoyé !</h3>
+            <p>Merci de votre message, je vous répondrai au plus vite.</p>
+            <button class="btn btn-primary btn-sm" onclick="closeModal()">Fermer</button>
+          </div>
+        </div>
 
         <div class="social-links">
           <a href="mailto:tibo.tessier@gmail.com" title="Email"
