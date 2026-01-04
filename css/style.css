@@ -563,7 +563,7 @@ html {
     transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
   }
   .nav-links.open {
-    max-height: 260px;
+    max-height: 330px;
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
