@@ -555,26 +555,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         if (response.ok) {
-          showSuccessModal();
+          const modal = document.getElementById("successModal");
+          if (modal) {
+            modal.classList.add("active");
+          }
           contactForm.reset();
         } else {
-          console.error("Erreur lors de l'envoi");
+          alert("Erreur lors de l'envoi. Veuillez réessayer.");
         }
       } catch (error) {
         console.error("Erreur:", error);
+        alert("Erreur lors de l'envoi. Veuillez réessayer.");
       }
     });
   }
 });
 
-// Modal Functions
-function showSuccessModal() {
-  const modal = document.getElementById("successModal");
-  if (modal) {
-    modal.classList.add("active");
-  }
-}
-
+// Modal Functions (outside DOMContentLoaded)
 function closeModal() {
   const modal = document.getElementById("successModal");
   if (modal) {
@@ -583,7 +580,7 @@ function closeModal() {
 }
 
 // Close modal when clicking outside
-document.addEventListener("click", (e) => {
+window.addEventListener("click", (e) => {
   const modal = document.getElementById("successModal");
   if (modal && e.target === modal) {
     closeModal();
