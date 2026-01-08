@@ -10,7 +10,46 @@ document.addEventListener("DOMContentLoaded", () => {
   const percentage = document.getElementById("loaderPercentage");
   const status = document.getElementById("loaderStatus");
   const loader = document.querySelector(".loader");
+  const container = document.querySelector(".loader-bg");
+  
+  // Ajout des particules
+if (container) {
+  const PARTICLE_COUNT = 40;
+  const colors = ["var(--primary)", "var(--accent)"];
 
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const p = document.createElement("span");
+    p.classList.add("loader-particle");
+
+    p.style.top = Math.random() * 100 + "%";
+    p.style.left = Math.random() * 100 + "%";
+
+    const size = 3 + Math.random() * 5;
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+
+    const color = colors[Math.floor(Math. random() * colors.length)];
+    p.style.background = color;
+    p.style. boxShadow = `0 0 ${size * 4}px ${color}`;
+
+    const tx = (Math.random() * 2 - 1) * 120;
+    const ty = (Math.random() * 2 - 1) * 160;
+
+    p.style.setProperty("--tx", `${tx}px`);
+    p.style.setProperty("--ty", `${ty}px`);
+
+    p.style.animation = `
+      particleFloat
+      ${3 + Math.random() * 3}s
+      linear
+      ${Math.random() * 3}s
+      infinite
+    `;
+
+    container.appendChild(p);
+  }
+}
+  
   if (progressBar && percentage && status && loader) {
     let progress = 0;
     
@@ -586,42 +625,3 @@ window.addEventListener("click", (e) => {
     closeModal();
   }
 });
-
-const container = document.querySelector(".loader-bg");
-const PARTICLE_COUNT = 40;
-
-const colors = ["var(--primary)", "var(--accent)"];
-
-for (let i = 0; i < PARTICLE_COUNT; i++) {
-  const p = document.createElement("span");
-  p.classList.add("loader-particle");
-
-  p.style.top = Math.random() * 100 + "%";
-  p.style.left = Math.random() * 100 + "%";
-
-  const size = 3 + Math.random() * 5;
-  p.style.width = size + "px";
-  p.style.height = size + "px";
-
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  p.style.background = color;
-  p.style.boxShadow = `0 0 ${size * 4}px ${color}`;
-
-  const tx = (Math.random() * 2 - 1) * 120;
-  const ty = (Math.random() * 2 - 1) * 160;
-
-  p.style.setProperty("--tx", `${tx}px`);
-  p.style.setProperty("--ty", `${ty}px`);
-
-  p.style.animation = `
-    particleFloat
-    ${3 + Math.random() * 3}s
-    linear
-    ${Math.random() * 3}s
-    infinite
-  `;
-
-  container.appendChild(p);
-}
-
-
