@@ -5,50 +5,145 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
 
-  // 2. Loader Moderne avec Progression
+  // 2. Loader Moderne avec Progression et Particules Améliorées
   const progressBar = document.getElementById("progressBar");
   const percentage = document.getElementById("loaderPercentage");
   const status = document.getElementById("loaderStatus");
   const loader = document.querySelector(".loader");
   const container = document.querySelector(".loader-bg");
   
-  // Ajout des particules
-if (container) {
-  const PARTICLE_COUNT = 40;
-  const colors = ["var(--primary)", "var(--accent)"];
+  // ===== PARTICULES AMÉLIORÉES =====
+  if (container) {
+    console.log("✅ Container trouvé, création des particules améliorées...");
+    
+    // Canvas pour les connexions entre particules
+    const canvas = document.createElement('canvas');
+    canvas.style.position = 'absolute';
+    canvas.style.inset = '0';
+    canvas.style. pointerEvents = 'none';
+    canvas.style.zIndex = '1';
+    canvas.width = container.offsetWidth;
+    canvas. height = container.offsetHeight;
+    container.insertBefore(canvas, container.firstChild);
 
-  for (let i = 0; i < PARTICLE_COUNT; i++) {
-    const p = document.createElement("span");
-    p.classList.add("loader-particle");
+    const ctx = canvas.getContext('2d');
 
-    p.style.top = Math.random() * 100 + "%";
-    p.style.left = Math.random() * 100 + "%";
-
-    const size = 3 + Math.random() * 5;
-    p.style.width = size + "px";
-    p.style.height = size + "px";
-
-    const color = colors[Math.floor(Math. random() * colors.length)];
-    p.style.background = color;
-    p.style. boxShadow = `0 0 ${size * 4}px ${color}`;
-
-    const tx = (Math.random() * 2 - 1) * 120;
-    const ty = (Math.random() * 2 - 1) * 160;
-
-    p.style.setProperty("--tx", `${tx}px`);
-    p.style.setProperty("--ty", `${ty}px`);
-
-    p.style.animation = `
-      particleFloat
-      ${3 + Math.random() * 3}s
-      linear
-      ${Math.random() * 3}s
-      infinite
+    // Effet de lumière centrale
+    const centerGlow = document.createElement('div');
+    centerGlow.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent 70%);
+      animation: glowPulse 3s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
     `;
+    container.appendChild(centerGlow);
 
-    container.appendChild(p);
+    // Configuration des particules
+    const PARTICLE_COUNT = 60;
+    const colors = ["#00f2ff", "#7000ff"];
+    const sizes = [2, 3, 4, 5, 6, 8];
+    const particles = [];
+
+    // Création des particules avec plus de variété
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const p = document.createElement("span");
+      p.classList.add("loader-particle");
+
+      const x = Math.random() * 100;
+      const y = Math.random() * 100;
+      
+      p.style.top = y + "%";
+      p.style.left = x + "%";
+
+      // Tailles variées
+      const size = sizes[Math. floor(Math.random() * sizes.length)];
+      p.style.width = size + "px";
+      p.style.height = size + "px";
+
+      // Couleur aléatoire
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      p.style.background = color;
+      p.style.boxShadow = `0 0 ${size * 4}px ${color}`;
+
+      // Mouvement aléatoire
+      const tx = (Math.random() * 2 - 1) * 120;
+      const ty = (Math.random() * 2 - 1) * 160;
+
+      p.style.setProperty("--tx", `${tx}px`);
+      p.style.setProperty("--ty", `${ty}px`);
+
+      // Animation avec vitesses variées selon la taille
+      const duration = size > 5 ? 5 + Math.random() * 4 : 2 + Math.random() * 3;
+      const delay = Math.random() * 3;
+      const pulseDuration = 1 + Math.random();
+      
+      p.style.animation = `
+        particleFloat ${duration}s linear ${delay}s infinite,
+        particlePulse ${pulseDuration}s ease-in-out ${delay}s infinite
+      `;
+
+      p.style.zIndex = '2';
+      container.appendChild(p);
+      
+      // Stocker pour les connexions
+      particles.push({ element: p, x, y, color, size });
+    }
+
+    console.log(`✅ ${PARTICLE_COUNT} particules créées avec succès`);
+
+    // Dessiner les connexions entre particules proches
+    function drawConnections() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const containerRect = container.getBoundingClientRect();
+      
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        const rect1 = p1.element. getBoundingClientRect();
+        const x1 = rect1.left + rect1.width / 2 - containerRect.left;
+        const y1 = rect1.top + rect1.height / 2 - containerRect.top;
+        
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const rect2 = p2.element.getBoundingClientRect();
+          const x2 = rect2.left + rect2.width / 2 - containerRect.left;
+          const y2 = rect2.top + rect2.height / 2 - containerRect.top;
+          
+          const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+          
+          // Connexion si distance < 150px
+          if (distance < 150) {
+            const opacity = (1 - distance / 150) * 0.3;
+            ctx.strokeStyle = `rgba(0, 242, 255, ${opacity})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      requestAnimationFrame(drawConnections);
+    }
+
+    // Démarrer l'animation des connexions
+    drawConnections();
+
+    // Redimensionner le canvas si la fenêtre change
+    window. addEventListener('resize', () => {
+      canvas.width = container.offsetWidth;
+      canvas.height = container.offsetHeight;
+    });
+  } else {
+    console.error("❌ Container . loader-bg non trouvé !");
   }
-}
   
   if (progressBar && percentage && status && loader) {
     let progress = 0;
@@ -83,13 +178,13 @@ if (container) {
                   opacity: 0,
                   duration: 0.5,
                   ease: "power2.inOut",
-                  onComplete: () => {
-                    loader.style.display = "none";
+                  onComplete:  () => {
+                    loader. style.display = "none";
                     // Débloquer le scroll
-                    document.body.classList.remove("no-scroll");
+                    document. body.classList.remove("no-scroll");
                     // Activer "Accueil" après le loader
                     const firstLink = document.querySelector(
-                      '.nav-link[href="#accueil"]'
+                      '. nav-link[href="#accueil"]'
                     );
                     if (firstLink) firstLink.classList.add("active");
                   },
@@ -124,8 +219,8 @@ if (container) {
   const glowPoint = document.querySelector(".glow-point");
   if (glowPoint) {
     document.addEventListener("mousemove", (e) => {
-      glowPoint.style.left = e.clientX + "px";
-      glowPoint.style.top = e.clientY + "px";
+      glowPoint.style.left = e. clientX + "px";
+      glowPoint. style.top = e.clientY + "px";
       glowPoint.style.opacity = "1";
     });
 
@@ -144,7 +239,7 @@ if (container) {
     const letters = "01010101010101";
     const fontSize = 16;
     const columns = width / fontSize;
-    const drops = Array.from({ length: columns }).fill(1);
+    const drops = Array. from({ length: columns }).fill(1);
 
     function drawMatrix() {
       ctx.fillStyle = "rgba(5, 5, 5, 0.05)";
@@ -177,7 +272,7 @@ if (container) {
     scrollTargets.forEach((section) => {
       const sectionTop = section.offsetTop;
       if (scrollY >= sectionTop - 200) {
-        current = section.getAttribute("id") || section.tagName.toLowerCase();
+        current = section. getAttribute("id") || section.tagName.toLowerCase();
       }
     });
 
@@ -209,7 +304,7 @@ if (container) {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
+      const target = document.querySelector(this. getAttribute("href"));
       if (target) {
         window.scrollTo({
           top: target.offsetTop - 50,
@@ -227,7 +322,7 @@ if (container) {
       navToggle.setAttribute("aria-expanded", String(isOpen));
       const icon = navToggle.querySelector("i");
       if (icon) {
-        icon.classList.toggle("fa-bars", !isOpen);
+        icon.classList.toggle("fa-bars", ! isOpen);
         icon.classList.toggle("fa-times", isOpen);
       }
     });
@@ -247,12 +342,12 @@ if (container) {
   const mDesc = document.getElementById("modalDesc");
   const mTech = document.getElementById("modalTech");
   const mPoints = document.getElementById("modalPoints");
-  const mLinks = document.getElementById("modalLinks");
+  const mLinks = document. getElementById("modalLinks");
   const closeBtn = document.querySelector(".close-modal");
 
   const projectsInfo = {
     "Application Tri Web": {
-      desc: "Application web permettant de suivre et gérer le tri des déchets au sein d’un campus universitaire.\nLes utilisateurs peuvent consulter les données de recyclage en temps réel, tandis que les administrateurs gèrent les informations via une interface sécurisée reliée à une base de données SQL optimisée.",
+      desc: "Application web permettant de suivre et gérer le tri des déchets au sein d'un campus universitaire.\nLes utilisateurs peuvent consulter les données de recyclage en temps réel, ajouter de nouvelles entrées, et visualiser des statistiques détaillées pour encourager les bonnes pratiques écologiques.",
       tech: ["PHP", "SQL", "HTML/CSS"],
       points: [
         "Système complet de gestion des données (ajout, modification, suppression)",
@@ -272,7 +367,7 @@ if (container) {
         ],
     },
     "Morpion JavaFX": {
-      desc: "Jeu de morpion développé en Java avec JavaFX, intégrant une interface graphique animée et une logique de jeu structurée.\nLe projet met l’accent sur la programmation orientée objet et une architecture propre facilitant l’évolution du jeu.",
+      desc:  "Jeu de morpion développé en Java avec JavaFX, intégrant une interface graphique animée et une logique de jeu structurée.\nLe projet met l'accent sur la programmation orientée objet et la gestion des événements utilisateur.",
       tech: ["Java", "JavaFX", "POO"],
       points: [
         "Gestion des tours, des scores et des états de la partie",
@@ -288,18 +383,18 @@ if (container) {
         ],
     },
     "Jeu Timeline": {
-      desc: "Jeu inspiré du Timeline, où les cartes sont générées dynamiquement à partir de fichiers JSON.\nLe joueur doit placer correctement des événements dans l’ordre chronologique, avec un système de score et de vies.",
+      desc: "Jeu inspiré du Timeline, où les cartes sont générées dynamiquement à partir de fichiers JSON.\nLe joueur doit placer correctement des événements dans l'ordre chronologique, avec une interface intuitive et fluide.",
       tech: ["Java", "JSON", "UX"],
       points: [
         "Chargement dynamique des cartes depuis des fichiers JSON",
         "Interaction fluide grâce au drag & drop",
-        "Facilité d’ajout de nouveaux decks sans modifier le code",
+        "Facilité d'ajout de nouveaux decks sans modifier le code",
       ],
       link: "indisponible",
-        images: [],
+        images:  [],
     },
     "Application web Météo": {
-      desc: "Application web permettant de consulter la météo actuelle et les prévisions sur plusieurs jours à partir d’une API externe.L’utilisateur peut rechercher une ville et visualiser les données dans une interface claire et responsive.",
+      desc: "Application web permettant de consulter la météo actuelle et les prévisions sur plusieurs jours à partir d'une API externe. L'utilisateur peut rechercher une ville et visualiser des informations détaillées sur les conditions météorologiques.",
       tech: ["JavaScript", "API", "HTML", "CSS"],
       points: [
         "Connexion à une API météo (OpenWeather)",
@@ -316,7 +411,7 @@ if (container) {
         ],
     },
     "Bot Discord mise à jour Apple": {
-      desc: "Bot Discord automatisé qui surveille les nouvelles mises à jour des appareils Apple et envoie des notifications sur un serveur Discord dès qu’une mise à jour est détectée.",
+      desc: "Bot Discord automatisé qui surveille les nouvelles mises à jour des appareils Apple et envoie des notifications sur un serveur Discord dès qu'une mise à jour est détectée.",
       tech: ["Python", "SQL"],
       points: [
         "Récupération automatique des données via une API",
@@ -351,13 +446,13 @@ if (container) {
     const showCarouselImage = (index) => {
       const carouselImage = document.getElementById("carouselImage");
       const dots = document.querySelectorAll(".carousel-dot");
-      if (!carouselImage || !currentProjectData) return;
+      if (! carouselImage || !currentProjectData) return;
 
       const images = currentProjectData.images || [];
       if (images.length === 0) return;
 
       currentCarouselIndex = (index + images.length) % images.length;
-      carouselImage.src = images[currentCarouselIndex];
+      carouselImage. src = images[currentCarouselIndex];
       carouselImage.style.opacity = "0";
       setTimeout(() => {
         carouselImage.style.transition = "opacity 0.3s ease";
@@ -376,11 +471,11 @@ if (container) {
     mTech.innerHTML = data.tech
       .map((t) => `<span class="pill">${t}</span>`)
       .join(" ");
-    mPoints.innerHTML = data.points.map((p) => `<li>${p}</li>`).join("");
+    mPoints.innerHTML = data.points. map((p) => `<li>${p}</li>`).join("");
     const linkValue = (data.link || "").trim();
     const normalizedLink = linkValue.toLowerCase();
 
-    if (!linkValue || linkValue === "#") {
+    if (! linkValue || linkValue === "#") {
       mLinks.innerHTML = "";
       return;
     }
@@ -406,7 +501,7 @@ if (container) {
       renderModal(data);
 
       const images = data.images || [];
-      const carouselContainer = document.getElementById("carouselContainer");
+      const carouselContainer = document. getElementById("carouselContainer");
       if (images.length > 0) {
         if (carouselContainer) carouselContainer.style.display = "";
         createCarouselDots(images.length);
@@ -418,9 +513,9 @@ if (container) {
 
   document.querySelectorAll(".btn-detail").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (!modal) return;
+      if (! modal) return;
       const card = btn.closest(".project-card");
-      const title = card?.querySelector("h3")?.innerText || "Projet";
+      const title = card?. querySelector("h3")?.innerText || "Projet";
       const data = projectsInfo[title];
 
       mTitle.textContent = title;
@@ -431,11 +526,11 @@ if (container) {
       document.body.style.overflow = "hidden";
 
       // Animation GSAP améliorée
-      gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25 });
+      gsap. fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25 });
       gsap.fromTo(
-        ".modal-content",
+        ". modal-content",
         { scale: 0.9, y: -30, opacity: 0 },
-        { scale: 1, y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
+        { scale: 1, y:  0, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
       );
     });
   });
@@ -457,21 +552,21 @@ if (container) {
     }
 
   const closeModal = () => {
-    if (!modal) return;
-    gsap.to(".modal-content", {
+    if (! modal) return;
+    gsap.to(". modal-content", {
       scale: 0.9,
       y: -30,
       opacity: 0,
       duration: 0.2,
       onComplete: () => {
         modal.style.display = "none";
-        document.body.style.overflow = "";
+        document.body.style. overflow = "";
       },
     });
     gsap.to(modal, { opacity: 0, duration: 0.2 });
   };
 
-  closeBtn?.addEventListener("click", closeModal);
+  closeBtn?. addEventListener("click", closeModal);
   window.addEventListener("click", (e) => {
     if (e.target === modal) closeModal();
   });
@@ -489,13 +584,13 @@ if (container) {
 
     const lines = [
       { type: "cmd", text: "whoami" },
-      { type: "out", text: "Tibo Tessier, développeur Full Stack en devenir" },
-      { type: "cmd", text: "cat passion.txt" },
+      { type:  "out", text: "Tibo Tessier, développeur Full Stack en devenir" },
+      { type:  "cmd", text: "cat passion.txt" },
       { type: "out", text: "> Full Stack Development 🚀" },
       { type: "out", text: "> Code propre & optimisé 💯" },
       { type: "out", text: "> Innovation & Créativité 🎨" },
-      { type: "cmd", text: "echo \"Prêt à apprendre !\"" },
-      { type: "out", text: "Prêt à apprendre !" },
+      { type: "cmd", text: "echo \"Prêt à apprendre ! \"" },
+      { type: "out", text:  "Prêt à apprendre !" },
     ];
 
     const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -515,7 +610,7 @@ if (container) {
       line.appendChild(content);
       terminalBody.appendChild(line);
 
-      if (cursor.parentElement) cursor.parentElement.removeChild(cursor);
+      if (cursor. parentElement) cursor.parentElement.removeChild(cursor);
       line.appendChild(cursor);
 
       // Typed effect avec délai rapide
@@ -566,14 +661,14 @@ if (container) {
   }
 
   // Contact Form Handler
-  const contactForm = document.getElementById("contactForm");
+  const contactForm = document. getElementById("contactForm");
   if (contactForm) {
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const formData = new FormData(contactForm);
       const email = formData.get("email");
-      const message = formData.get("message");
+      const message = formData. get("message");
 
       // Validation
       if (!email || !message) {
@@ -587,7 +682,7 @@ if (container) {
             "Content-Type": "application/json",
             Accept: "application/json",
           },
-          body: JSON.stringify({
+          body: JSON. stringify({
             email: email,
             message: message,
           }),
@@ -596,15 +691,15 @@ if (container) {
         if (response.ok) {
           const modal = document.getElementById("successModal");
           if (modal) {
-            modal.classList.add("active");
+            modal. classList.add("active");
           }
           contactForm.reset();
         } else {
-          alert("Erreur lors de l'envoi. Veuillez réessayer.");
+          alert("Erreur lors de l'envoi.  Veuillez réessayer.");
         }
       } catch (error) {
         console.error("Erreur:", error);
-        alert("Erreur lors de l'envoi. Veuillez réessayer.");
+        alert("Erreur lors de l'envoi.  Veuillez réessayer.");
       }
     });
   }
