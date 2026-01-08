@@ -13,9 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".loader-bg");
   
   // ===== PARTICULES AMÉLIORÉES =====
-  if (container) {
-    console.log("✅ Container trouvé, création des particules améliorées...");
-    
+  if (container) {    
     // Canvas pour les connexions entre particules
     const canvas = document.createElement('canvas');
     canvas.style.position = 'absolute';
