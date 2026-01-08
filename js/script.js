@@ -13,135 +13,140 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".loader-bg");
   
   // ===== PARTICULES AMÉLIORÉES =====
-  if (container) {    
-    // Canvas pour les connexions entre particules
-    const canvas = document.createElement('canvas');
-    canvas.style.position = 'absolute';
-    canvas.style.inset = '0';
-    canvas.style. pointerEvents = 'none';
-    canvas.style.zIndex = '1';
-    canvas.width = container.offsetWidth;
-    canvas. height = container.offsetHeight;
-    container.insertBefore(canvas, container.firstChild);
+// ===== PARTICULES AMÉLIORÉES AVEC PLUS DE MOUVEMENT =====
+if (container) {
+  console.log("✅ Container trouvé, création des particules améliorées.. .");
+  
+  // Canvas pour les connexions entre particules
+  const canvas = document.createElement('canvas');
+  canvas.style.position = 'absolute';
+  canvas.style.inset = '0';
+  canvas.style.pointerEvents = 'none';
+  canvas.style.zIndex = '1';
+  canvas.width = container.offsetWidth;
+  canvas. height = container.offsetHeight;
+  container.insertBefore(canvas, container.firstChild);
 
-    const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d');
 
-    // Effet de lumière centrale
-    const centerGlow = document.createElement('div');
-    centerGlow.style.cssText = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(0, 242, 255, 0.2), transparent 70%);
-      animation: glowPulse 3s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 0;
+  // Effet de lumière centrale
+  const centerGlow = document.createElement('div');
+  centerGlow.style. cssText = `
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 242, 255, 0.25), transparent 70%);
+    animation: glowPulse 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  `;
+  container.appendChild(centerGlow);
+
+  // Configuration des particules
+  const PARTICLE_COUNT = 50;
+  const colors = ["#00f2ff", "#7000ff"];
+  const sizes = [3, 4, 5, 6, 7, 8];
+  const particles = [];
+
+  // Création des particules avec BEAUCOUP plus de mouvement
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const p = document.createElement("span");
+    p.classList.add("loader-particle");
+
+    const x = Math.random() * 100;
+    const y = Math.random() * 100;
+    
+    p.style.top = y + "%";
+    p.style.left = x + "%";
+
+    // Tailles variées
+    const size = sizes[Math.floor(Math.random() * sizes.length)];
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+
+    // Couleur aléatoire
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    p.style.background = color;
+    p.style.boxShadow = `0 0 ${size * 6}px ${color}`;
+
+    // 🔥 MOUVEMENT BEAUCOUP PLUS PRONONCÉ
+    const tx = (Math.random() * 2 - 1) * 250; // Augmenté de 120 à 250
+    const ty = (Math.random() * 2 - 1) * 300; // Augmenté de 160 à 300
+
+    p.style.setProperty("--tx", `${tx}px`);
+    p.style.setProperty("--ty", `${ty}px`);
+
+    // Animation avec vitesses plus rapides et variées
+    const duration = size > 6 ? 3 + Math.random() * 2 : 2 + Math.random() * 2; // Plus rapide
+    const delay = Math.random() * 2;
+    const pulseDuration = 0.8 + Math.random() * 0.7; // Pulsation plus rapide
+    
+    p.style.animation = `
+      particleFloat ${duration}s ease-in-out ${delay}s infinite,
+      particlePulse ${pulseDuration}s ease-in-out ${delay}s infinite
     `;
-    container.appendChild(centerGlow);
 
-    // Configuration des particules
-    const PARTICLE_COUNT = 60;
-    const colors = ["#00f2ff", "#7000ff"];
-    const sizes = [2, 3, 4, 5, 6, 8];
-    const particles = [];
+    p.style.zIndex = '2';
+    container.appendChild(p);
+    
+    // Stocker pour les connexions
+    particles.push({ element: p, x, y, color, size });
+  }
 
-    // Création des particules avec plus de variété
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const p = document.createElement("span");
-      p.classList.add("loader-particle");
+  console.log(`✅ ${PARTICLE_COUNT} particules créées avec succès`);
 
-      const x = Math.random() * 100;
-      const y = Math.random() * 100;
+  // Dessiner les connexions entre particules proches
+  function drawConnections() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const containerRect = container.getBoundingClientRect();
+    
+    for (let i = 0; i < particles.length; i++) {
+      const p1 = particles[i];
+      const rect1 = p1.element. getBoundingClientRect();
+      const x1 = rect1.left + rect1.width / 2 - containerRect.left;
+      const y1 = rect1.top + rect1.height / 2 - containerRect.top;
       
-      p.style.top = y + "%";
-      p.style.left = x + "%";
-
-      // Tailles variées
-      const size = sizes[Math. floor(Math.random() * sizes.length)];
-      p.style.width = size + "px";
-      p.style.height = size + "px";
-
-      // Couleur aléatoire
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      p.style.background = color;
-      p.style.boxShadow = `0 0 ${size * 4}px ${color}`;
-
-      // Mouvement aléatoire
-      const tx = (Math.random() * 2 - 1) * 120;
-      const ty = (Math.random() * 2 - 1) * 160;
-
-      p.style.setProperty("--tx", `${tx}px`);
-      p.style.setProperty("--ty", `${ty}px`);
-
-      // Animation avec vitesses variées selon la taille
-      const duration = size > 5 ? 5 + Math.random() * 4 : 2 + Math.random() * 3;
-      const delay = Math.random() * 3;
-      const pulseDuration = 1 + Math.random();
-      
-      p.style.animation = `
-        particleFloat ${duration}s linear ${delay}s infinite,
-        particlePulse ${pulseDuration}s ease-in-out ${delay}s infinite
-      `;
-
-      p.style.zIndex = '2';
-      container.appendChild(p);
-      
-      // Stocker pour les connexions
-      particles.push({ element: p, x, y, color, size });
-    }
-
-    console.log(`✅ ${PARTICLE_COUNT} particules créées avec succès`);
-
-    // Dessiner les connexions entre particules proches
-    function drawConnections() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const containerRect = container.getBoundingClientRect();
-      
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        const rect1 = p1.element. getBoundingClientRect();
-        const x1 = rect1.left + rect1.width / 2 - containerRect.left;
-        const y1 = rect1.top + rect1.height / 2 - containerRect.top;
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const rect2 = p2.element.getBoundingClientRect();
+        const x2 = rect2.left + rect2.width / 2 - containerRect.left;
+        const y2 = rect2.top + rect2.height / 2 - containerRect.top;
         
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const rect2 = p2.element.getBoundingClientRect();
-          const x2 = rect2.left + rect2.width / 2 - containerRect.left;
-          const y2 = rect2.top + rect2.height / 2 - containerRect.top;
+        const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+        
+        // Connexion si distance < 180px (augmenté pour plus de connexions)
+        if (distance < 180) {
+          const opacity = (1 - distance / 180) * 0.4;
+          const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
+          gradient.addColorStop(0, `rgba(0, 242, 255, ${opacity})`);
+          gradient.addColorStop(1, `rgba(112, 0, 255, ${opacity})`);
           
-          const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-          
-          // Connexion si distance < 150px
-          if (distance < 150) {
-            const opacity = (1 - distance / 150) * 0.3;
-            ctx.strokeStyle = `rgba(0, 242, 255, ${opacity})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-          }
+          ctx.strokeStyle = gradient;
+          ctx. lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
         }
       }
-      
-      requestAnimationFrame(drawConnections);
     }
-
-    // Démarrer l'animation des connexions
-    drawConnections();
-
-    // Redimensionner le canvas si la fenêtre change
-    window. addEventListener('resize', () => {
-      canvas.width = container.offsetWidth;
-      canvas.height = container.offsetHeight;
-    });
-  } else {
-    console.error("❌ Container . loader-bg non trouvé !");
+    
+    requestAnimationFrame(drawConnections);
   }
+
+  // Démarrer l'animation des connexions
+  drawConnections();
+
+  // Redimensionner le canvas si la fenêtre change
+  window.addEventListener('resize', () => {
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+  });
+}
   
   if (progressBar && percentage && status && loader) {
     let progress = 0;
