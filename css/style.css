@@ -96,50 +96,48 @@ html {
 
 @keyframes particleFloat {
   0% {
-    transform: translate3d(0, 0, 0) scale(0.6);
+    transform: translate3d(0, 0, 0) scale(0.8);
     opacity: 0;
   }
 
-  15% {
+  10% {
     opacity: 1;
   }
 
   50% {
-    transform: translate3d(var(--tx), var(--ty), 0) scale(1.4);
-    opacity: 0.8;
+    transform: translate3d(var(--tx), var(--ty), 0) scale(1.2);
+    opacity: 1;
   }
 
   100% {
-    transform: translate3d(calc(var(--tx) * 1.5), calc(var(--ty) * 1.5), 0)
-      scale(0.3);
+    transform: translate3d(calc(var(--tx) * 1.8), calc(var(--ty) * 1.8), 0) scale(0.5);
     opacity: 0;
   }
 }
 
-/* Animation de pulsation pour les particules */
+/* Animation de pulsation plus visible */
 @keyframes particlePulse {
   0%, 100% { 
-    opacity: 0. 6; 
-    transform: scale(1);
+    opacity:  0.7; 
+    filter: brightness(1);
   }
   50% { 
     opacity: 1; 
-    transform: scale(1.5);
+    filter: brightness(1.5);
   }
 }
 
-/* Animation de la lumière centrale */
+/* Animation de la lumière centrale plus dynamique */
 @keyframes glowPulse {
   0%, 100% { 
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.2;
   }
   50% { 
-    transform: translate(-50%, -50%) scale(1.3);
-    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0.5;
   }
 }
-
 
 .loader-content {
   text-align: center;
