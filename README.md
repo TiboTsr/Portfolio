@@ -159,8 +159,8 @@ Portfolio moderne et professionnel d'un développeur Full Stack. Design dark imm
 - **Responsive Canvas**: Redimensionnement automatique de l'effet Matrix
 
 ## 📊 Statistiques
-- **Lignes de Code**: ~600 (HTML + CSS + JS)
-- **Temps de Développement**: 10+ heures de conception et d'implémentation
+- **Lignes de Code**: ~2400 (HTML + CSS + JS)
+- **Temps de Développement**: 30+ heures de conception et d'implémentation
 - **Performance**: Chargement < 2s, animations 60fps
 - **Compatibilité**: Chrome, Firefox, Safari, Edge (versions récentes)
 
@@ -182,4 +182,4 @@ Ce portfolio est développé par Tibo TESSIER. Code libre d'usage pour inspirati
 
 ---
 
-**Développé avec passion et rigueur** 💙 © 2025 Tibo Tessier
+**Développé avec passion** 💙 © 2026 Tibo Tessier
