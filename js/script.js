@@ -13,19 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.querySelector(".loader-bg");
 
   if (container) {
-    // Canvas pour les connexions entre particules
-    const canvas = document.createElement("canvas");
-    canvas.style.position = "absolute";
-    canvas.style.inset = "0";
-    canvas.style.pointerEvents = "none";
-    canvas.style.zIndex = "1";
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-    container.insertBefore(canvas, container.firstChild);
-
-    const ctx = canvas.getContext("2d");
-
-    // Effet de lumière centrale
     const centerGlow = document.createElement("div");
     centerGlow.style.cssText = `
     position: absolute;
@@ -41,13 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
     container.appendChild(centerGlow);
 
-    // Configuration des particules
     const PARTICLE_COUNT = 50;
     const colors = ["#00f2ff", "#7000ff"];
     const sizes = [3, 4, 5, 6, 7, 8];
     const particles = [];
 
-    // Création des particules avec BEAUCOUP plus de mouvement
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       const p = document.createElement("span");
       p.classList.add("loader-particle");
@@ -58,90 +43,35 @@ document.addEventListener("DOMContentLoaded", () => {
       p.style.top = y + "%";
       p.style.left = x + "%";
 
-      // Tailles variées
       const size = sizes[Math.floor(Math.random() * sizes.length)];
       p.style.width = size + "px";
       p.style.height = size + "px";
 
-      // Couleur aléatoire
       const color = colors[Math.floor(Math.random() * colors.length)];
       p.style.background = color;
       p.style.boxShadow = `0 0 ${size * 6}px ${color}`;
 
-      // 🔥 MOUVEMENT BEAUCOUP PLUS PRONONCÉ
-      const tx = (Math.random() * 2 - 1) * 250; // Augmenté de 120 à 250
-      const ty = (Math.random() * 2 - 1) * 300; // Augmenté de 160 à 300
+      const tx = (Math.random() * 2 - 1) * 300;
+      const ty = (Math.random() * 2 - 1) * 400;
 
       p.style.setProperty("--tx", `${tx}px`);
       p.style.setProperty("--ty", `${ty}px`);
 
-      // Animation avec vitesses plus rapides et variées
-      const duration = size > 6 ? 3 + Math.random() * 2 : 2 + Math.random() * 2; // Plus rapide
+      const duration = size > 6 ? 3 + Math.random() * 2 : 2 + Math.random() * 2;
       const delay = Math.random() * 2;
-      const pulseDuration = 0.8 + Math.random() * 0.7; // Pulsation plus rapide
+      const pulseDuration = 0.8 + Math.random() * 0.7; 
 
       p.style.animation = `
       particleFloat ${duration}s ease-in-out ${delay}s infinite,
       particlePulse ${pulseDuration}s ease-in-out ${delay}s infinite
     `;
 
-      p.style.zIndex = "2";
+      p.style.zIndex = "0";
       container.appendChild(p);
 
-      // Stocker pour les connexions
       particles.push({ element: p, x, y, color, size });
     }
 
-    console.log(`✅ ${PARTICLE_COUNT} particules créées avec succès`);
-
-    // Dessiner les connexions entre particules proches
-    function drawConnections() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const containerRect = container.getBoundingClientRect();
-
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        const rect1 = p1.element.getBoundingClientRect();
-        const x1 = rect1.left + rect1.width / 2 - containerRect.left;
-        const y1 = rect1.top + rect1.height / 2 - containerRect.top;
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const rect2 = p2.element.getBoundingClientRect();
-          const x2 = rect2.left + rect2.width / 2 - containerRect.left;
-          const y2 = rect2.top + rect2.height / 2 - containerRect.top;
-
-          const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-
-          // Connexion si distance < 180px (augmenté pour plus de connexions)
-          if (distance < 180) {
-            const opacity = (1 - distance / 180) * 0.4;
-            const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
-            gradient.addColorStop(0, `rgba(0, 242, 255, ${opacity})`);
-            gradient.addColorStop(1, `rgba(112, 0, 255, ${opacity})`);
-
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(drawConnections);
-    }
-
-    // Démarrer l'animation des connexions
-    drawConnections();
-
-    // Redimensionner le canvas si la fenêtre change
-    window.addEventListener("resize", () => {
-      canvas.width = container.offsetWidth;
-      canvas.height = container.offsetHeight;
-    });
   }
 
   if (progressBar && percentage && status && loader) {
@@ -171,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentStep < loadingSteps.length) {
               setTimeout(updateProgress, 100);
             } else {
-              // Animation de sortie immédiate
               setTimeout(() => {
                 gsap.to(loader, {
                   opacity: 0,
@@ -179,11 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   ease: "power2.inOut",
                   onComplete: () => {
                     loader.style.display = "none";
-                    // Débloquer le scroll
                     document.body.classList.remove("no-scroll");
-                    // Activer "Accueil" après le loader
                     const firstLink = document.querySelector(
-                      '. nav-link[href="#accueil"]'
+                      '.nav-link[href="#accueil"]'
                     );
                     if (firstLink) firstLink.classList.add("active");
                   },
@@ -200,10 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    // Démarrer la progression après un court délai
     setTimeout(updateProgress, 400);
   } else {
-    // Si le loader est absent, s'assurer que la page est utilisable
     const firstLink = document.querySelector('.nav-link[href="#accueil"]');
     if (firstLink) firstLink.classList.add("active");
   }
@@ -356,14 +281,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       link: "prochainement",
       images: [
-        "./images/AppRecycl1.png",
-        "./images/AppRecycl2.png",
-        "./images/AppRecycl3.png",
-        "./images/AppRecycl4.png",
-        "./images/AppRecycl5.png",
-        "./images/AppRecycl6.png",
-        "./images/AppRecycl7.png",
-        "./images/AppRecycl8.png",
+        "./assets/images/AppRecycl1.png",
+        "./assets/images/AppRecycl2.png",
+        "./assets/images/AppRecycl3.png",
+        "./assets/images/AppRecycl4.png",
+        "./assets/images/AppRecycl5.png",
+        "./assets/images/AppRecycl6.png",
+        "./assets/images/AppRecycl7.png",
+        "./assets/images/AppRecycl8.png",
       ],
     },
     "Morpion JavaFX": {
@@ -376,10 +301,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       link: "http://github.com/TiboTsr/IHM-Morpion",
       images: [
-        "./images/Morpion1.png",
-        "./images/Morpion2.png",
-        "./images/Morpion3.png",
-        "./images/Morpion4.png",
+        "./assets/images/Morpion1.png",
+        "./assets/images/Morpion2.png",
+        "./assets/images/Morpion3.png",
+        "./assets/images/Morpion4.png",
       ],
     },
     "Jeu Timeline": {
@@ -404,10 +329,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       link: "prochainement",
       images: [
-        "./images/AppMeteo1.png",
-        "./images/AppMeteo2.png",
-        "./images/AppMeteo3.png",
-        "./images/AppMeteo4.png",
+        "./assets/images/AppMeteo1.png",
+        "./assets/images/AppMeteo2.png",
+        "./assets/images/AppMeteo3.png",
+        "./assets/images/AppMeteo4.png",
       ],
     },
     "Bot Discord mise à jour Apple": {
@@ -421,10 +346,10 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       link: "https://applebot.tibotsr.dev/",
       images: [
-        "./images/AppleBot1.png",
-        "./images/AppleBot2.png",
-        "./images/AppleBot3.png",
-        "./images/AppleBot4.png",
+        "./assets/images/AppleBot1.png",
+        "./assets/images/AppleBot2.png",
+        "./assets/images/AppleBot3.png",
+        "./assets/images/AppleBot4.png",
       ],
     },
   };
@@ -452,7 +377,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (images.length === 0) return;
 
     currentCarouselIndex = (index + images.length) % images.length;
-    carouselImage.src = images[currentCarouselIndex];
+    const src = images[currentCarouselIndex];
+    const resolver = (path) => {
+      if (path.includes("/assets/images/")) {
+        return { primary: path, alt: path.replace("/assets/images/", "/images/") };
+      }
+      if (path.includes("/images/")) {
+        return { primary: path, alt: path.replace("/images/", "/assets/images/") };
+      }
+      return { primary: path, alt: null };
+    };
+    const { primary, alt } = resolver(src);
+    carouselImage.dataset.fallback = "0";
+    carouselImage.onerror = () => {
+      if (alt && carouselImage.dataset.fallback !== "1") {
+        carouselImage.dataset.fallback = "1";
+        carouselImage.src = alt;
+      }
+    };
+    carouselImage.src = primary;
     carouselImage.style.opacity = "0";
     setTimeout(() => {
       carouselImage.style.transition = "opacity 0.3s ease";
@@ -535,7 +478,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Animation GSAP améliorée
       gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25 });
       gsap.fromTo(
-        ". modal-content",
+        ".modal-content",
         { scale: 0.9, y: -30, opacity: 0 },
         { scale: 1, y: 0, opacity: 1, duration: 0.4, ease: "back.out(1.7)" }
       );
@@ -560,7 +503,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const closeModal = () => {
     if (!modal) return;
-    gsap.to(". modal-content", {
+    gsap.to(".modal-content", {
       scale: 0.9,
       y: -30,
       opacity: 0,
@@ -679,11 +622,75 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData(contactForm);
       const email = formData.get("email");
       const message = formData.get("message");
+      const emailInput = contactForm.querySelector('[name="email"]');
+      const messageInput = contactForm.querySelector('[name="message"]');
 
-      // Validation
-      if (!email || !message) {
-        return; // Let HTML5 validation show the styled error
+      const getOrCreateErrorEl = (input) => {
+        if (!input) return null;
+        let el = input.nextElementSibling;
+        if (!el || !el.classList || !el.classList.contains("error-msg")) {
+          el = document.createElement("div");
+          el.className = "error-msg";
+          input.insertAdjacentElement("afterend", el);
+        }
+        return el;
+      };
+
+      const clearFieldError = (input) => {
+        if (!input) return;
+        input.classList.remove("input-error");
+        const el = input.nextElementSibling;
+        if (el && el.classList.contains("error-msg")) {
+          el.textContent = "";
+        }
+      };
+
+      const showFieldError = (input, msg) => {
+        if (!input) return;
+        input.classList.add("input-error");
+        const el = getOrCreateErrorEl(input);
+        if (el) el.textContent = msg;
+      };
+
+      const showToast = (message, type = "error") => {
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.setAttribute("role", "alert");
+        toast.setAttribute("aria-live", "polite");
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = "0";
+          toast.style.transform = "translate(-50%, 10px)";
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      };
+
+      // Validation améliorée
+      clearFieldError(emailInput);
+      clearFieldError(messageInput);
+      let hasError = false;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      if (!email || !emailPattern.test(String(email))) {
+        showFieldError(emailInput, "Veuillez saisir un email valide.");
+        hasError = true;
       }
+      if (!message || String(message).trim().length < 2) {
+        showFieldError(messageInput, "Votre message doit contenir au moins 2 caractères.");
+        hasError = true;
+      }
+      if (hasError) {
+        showToast("Veuillez corriger les erreurs du formulaire.", "error");
+        return;
+      }
+
+      const submitBtn = contactForm.querySelector('button[type="submit"], input[type="submit"]');
+      const originalLabel = submitBtn ? submitBtn.textContent : null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi...";
+      }
+      contactForm.setAttribute("aria-busy", "true");
 
       try {
         const response = await fetch("https://formspree.io/f/mqeawqwq", {
@@ -704,18 +711,51 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.classList.add("active");
           }
           contactForm.reset();
+          showToast("Message envoyé avec succès !", "success");
         } else {
-          alert("Erreur lors de l'envoi.  Veuillez réessayer.");
+          let serverMsg = "Erreur lors de l'envoi. Veuillez réessayer.";
+          try {
+            const data = await response.json();
+            if (data && Array.isArray(data.errors) && data.errors.length) {
+              serverMsg = data.errors[0].message || serverMsg;
+            }
+          } catch (_) {}
+          showToast(serverMsg, "error");
         }
       } catch (error) {
         console.error("Erreur:", error);
-        alert("Erreur lors de l'envoi.  Veuillez réessayer.");
+        showToast("Une erreur réseau est survenue. Réessayez plus tard.", "error");
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        if (originalLabel) submitBtn.textContent = originalLabel;
+      }
+      contactForm.removeAttribute("aria-busy");
+    });
+
+    // Clear errors live on input
+    const emailInput2 = contactForm.querySelector('[name="email"]');
+    const messageInput2 = contactForm.querySelector('[name="message"]');
+    emailInput2 && emailInput2.addEventListener("input", () => {
+      const val = emailInput2.value;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+      if (emailPattern.test(String(val))) {
+        const el = emailInput2.nextElementSibling;
+        if (el && el.classList.contains("error-msg")) el.textContent = "";
+        emailInput2.classList.remove("input-error");
+      }
+    });
+    messageInput2 && messageInput2.addEventListener("input", () => {
+      const val = messageInput2.value;
+      if (String(val).trim().length >= 10) {
+        const el = messageInput2.nextElementSibling;
+        if (el && el.classList.contains("error-msg")) el.textContent = "";
+        messageInput2.classList.remove("input-error");
       }
     });
   }
 });
 
-// Modal Functions (outside DOMContentLoaded)
 function closeModal() {
   const modal = document.getElementById("successModal");
   if (modal) {
@@ -723,7 +763,6 @@ function closeModal() {
   }
 }
 
-// Close modal when clicking outside
 window.addEventListener("click", (e) => {
   const modal = document.getElementById("successModal");
   if (modal && e.target === modal) {
