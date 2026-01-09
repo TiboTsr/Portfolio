@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+Disallow: /.vscode/
+Disallow: /assets/
+Disallow: /css/
+Disallow: /js/
+
+Sitemap: https://tibotsr.dev/sitemap.xml
