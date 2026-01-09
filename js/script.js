@@ -616,6 +616,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Contact Form Handler
   const contactForm = document.getElementById("contactForm");
   if (contactForm) {
+    contactForm.setAttribute("novalidate", "novalidate");
+
     contactForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -652,7 +654,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (el) el.textContent = msg;
       };
 
-      /*const showToast = (message, type = "error") => {
+      const showToast = (message, type = "error") => {
         const toast = document.createElement("div");
         toast.className = `toast toast-${type}`;
         toast.setAttribute("role", "alert");
@@ -664,7 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
           toast.style.transform = "translate(-50%, 10px)";
           setTimeout(() => toast.remove(), 300);
         }, 3500);
-      };*/
+      };
 
       // Validation améliorée
       clearFieldError(emailInput);
@@ -678,6 +680,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!message || String(message).trim().length < 2) {
         showFieldError(messageInput, "Votre message doit contenir au moins 2 caractères.");
         hasError = true;
+      }
+
+      if (hasError) {
+        return;
       }
 
       const submitBtn = contactForm.querySelector('button[type="submit"], input[type="submit"]');
@@ -707,7 +713,6 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.classList.add("active");
           }
           contactForm.reset();
-          showToast("Message envoyé avec succès !", "success");
         } else {
           let serverMsg = "Erreur lors de l'envoi. Veuillez réessayer.";
           try {
@@ -721,12 +726,13 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Erreur:", error);
         showToast("Une erreur réseau est survenue. Réessayez plus tard.", "error");
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          if (originalLabel) submitBtn.textContent = originalLabel;
+        }
+        contactForm.removeAttribute("aria-busy");
       }
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        if (originalLabel) submitBtn.textContent = originalLabel;
-      }
-      contactForm.removeAttribute("aria-busy");
     });
 
     // Clear errors live on input
