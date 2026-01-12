@@ -143,13 +143,6 @@
     <nav class="glass-nav">
       <div class="nav-container">
         <div class="logo">TT<span>.</span></div>
-        <button
-          class="nav-toggle"
-          aria-label="Ouvrir le menu"
-          aria-expanded="false"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
         <div class="nav-links" id="navLinks">
           <a href="#accueil" class="nav-link">Accueil</a>
           <a href="#about" class="nav-link">À Propos</a>
@@ -157,6 +150,22 @@
           <a href="#competences" class="nav-link">Compétences</a>
           <a href="#parcours" class="nav-link">Parcours</a>
           <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Basculer le thème clair / sombre"
+          >
+            <i class="fas fa-moon"></i>
+          </button>
+          <button
+            class="nav-toggle"
+            aria-label="Ouvrir le menu"
+            aria-expanded="false"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
       </div>
     </nav>
@@ -188,6 +197,13 @@
           </a>
           <a href="#contact" class="btn btn-outline">
             <i class="fas fa-paper-plane"></i> Me contacter
+          </a>
+          <a
+            href="CV_Tibo_Tessier.pdf"
+            download="CV_Tibo_Tessier.pdf"
+            class="btn btn-ghost"
+          >
+            <i class="fas fa-file-arrow-down"></i> Télécharger mon CV
           </a>
         </div>
       </div>
@@ -550,9 +566,18 @@
                 Vous avez une place pour moi ? N'hésitez pas à
                 <strong>me contacter !</strong>
               </p>
-              <a href="#contact" class="btn btn-primary">
-                <i class="fas fa-envelope"></i> Me contacter
-              </a>
+              <div class="experience-actions">
+                <a href="#contact" class="btn btn-primary">
+                  <i class="fas fa-envelope"></i> Me contacter
+                </a>
+                <a
+                  href="CV_Tibo_Tessier.pdf"
+                  download="CV_Tibo_Tessier.pdf"
+                  class="btn btn-outline"
+                >
+                  <i class="fas fa-file-arrow-down"></i> Télécharger mon CV
+                </a>
+              </div>
             </div>
           </div>
         </div>

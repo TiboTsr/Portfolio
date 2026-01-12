@@ -5,6 +5,48 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
 
+  // 1b. Thème clair / sombre avec persistance
+  const themeToggle = document.getElementById("themeToggle");
+  const themeIcon = themeToggle ? themeToggle.querySelector("i") : null;
+  const root = document.documentElement;
+
+  const getMatrixPalette = () => {
+    const styles = getComputedStyle(root);
+    return {
+      color:
+        styles.getPropertyValue("--matrix-color").trim() || "#00f2ff",
+      trail:
+        styles.getPropertyValue("--matrix-trail").trim() ||
+        "rgba(5, 5, 5, 0.05)",
+    };
+  };
+
+  let matrixPalette = getMatrixPalette();
+
+  const applyTheme = (mode) => {
+    const isLight = mode === "light";
+    document.body.classList.toggle("light-mode", isLight);
+    root.classList.toggle("light-mode", isLight);
+    if (themeIcon) {
+      themeIcon.classList.toggle("fa-sun", isLight);
+      themeIcon.classList.toggle("fa-moon", !isLight);
+    }
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+    matrixPalette = getMatrixPalette();
+  };
+
+  const storedTheme = localStorage.getItem("theme") || "dark";
+  applyTheme(storedTheme);
+
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const nextTheme = document.body.classList.contains("light-mode")
+        ? "dark"
+        : "light";
+      applyTheme(nextTheme);
+    });
+  }
+
   // 2. Loader Moderne avec Progression et Particules Améliorées
   const progressBar = document.getElementById("progressBar");
   const percentage = document.getElementById("loaderPercentage");
@@ -166,9 +208,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const drops = Array.from({ length: columns }).fill(1);
 
     function drawMatrix() {
-      ctx.fillStyle = "rgba(5, 5, 5, 0.05)";
+      ctx.fillStyle = matrixPalette.trail;
       ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = "#00f2ff";
+      ctx.fillStyle = matrixPalette.color;
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -186,6 +228,12 @@ document.addEventListener("DOMContentLoaded", () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     });
+
+    // Recalcule la palette après un toggle de thème
+    const observer = new MutationObserver(() => {
+      matrixPalette = getMatrixPalette();
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
   }
 
   // 6. Navigation active au scroll
