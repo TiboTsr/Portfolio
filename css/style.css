@@ -63,6 +63,18 @@ a, button, .project-card {
     cursor: none;
 }
 
+.no-cursor a,
+.no-cursor button,
+.no-cursor .project-card {
+  cursor: auto;
+}
+
+.no-cursor .custom-cursor,
+.no-cursor .custom-cursor-dot,
+.no-cursor .glow-point {
+  display: none !important;
+}
+
 .custom-cursor {
     width: 28px;
     height: 28px;
@@ -104,6 +116,10 @@ body.hovering .custom-cursor {
     .custom-cursor-dot {
         display: none;
     }
+
+  .glow-point {
+    display: none !important;
+  }
 }
 
 /* Bloquer le scroll pendant le chargement */

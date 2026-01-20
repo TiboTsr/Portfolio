@@ -2,6 +2,8 @@
 document.body.classList.add("no-scroll");
 
 document.addEventListener("DOMContentLoaded", () => {
+  const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
 
@@ -183,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. Effet de lumière sur la grille au passage de la souris
   const glowPoint = document.querySelector(".glow-point");
-  if (glowPoint) {
+  if (!isTouchDevice && glowPoint) {
     document.addEventListener("mousemove", (e) => {
       glowPoint.style.left = e.clientX + "px";
       glowPoint.style.top = e.clientY + "px";
@@ -193,6 +195,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("mouseleave", () => {
       glowPoint.style.opacity = "0";
     });
+  } else if (isTouchDevice) {
+    document.body.classList.add("no-cursor");
+    if (glowPoint) glowPoint.style.display = "none";
+    const cursorEl = document.querySelector('.custom-cursor');
+    const cursorDotEl = document.querySelector('.custom-cursor-dot');
+    if (cursorEl) cursorEl.style.display = "none";
+    if (cursorDotEl) cursorDotEl.style.display = "none";
   }
 
   // 5. Matrix Canvas Effect
@@ -756,27 +765,32 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Gestion du curseur personnalisé
-const cursor = document.querySelector('.custom-cursor');
-const cursorDot = document.querySelector('.custom-cursor-dot');
+// Gestion du curseur personnalisé (désactivé sur appareils tactiles)
+(() => {
+  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  if (isTouchDevice) return;
 
-if (cursor && cursorDot) {
+  const cursor = document.querySelector('.custom-cursor');
+  const cursorDot = document.querySelector('.custom-cursor-dot');
+
+  if (cursor && cursorDot) {
     document.addEventListener('mousemove', (e) => {
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-        
-        cursor.animate({
-            left: e.clientX + 'px',
-            top: e.clientY + 'px'
-        }, { duration: 500, fill: "forwards" });
+      cursorDot.style.left = e.clientX + 'px';
+      cursorDot.style.top = e.clientY + 'px';
+          
+      cursor.animate({
+        left: e.clientX + 'px',
+        top: e.clientY + 'px'
+      }, { duration: 500, fill: "forwards" });
     });
 
     const links = document.querySelectorAll('a, button, .project-card');
     links.forEach(link => {
-        link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-        link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
-}
+  }
+})();
 
 
 // Fonction pour copier l'email
