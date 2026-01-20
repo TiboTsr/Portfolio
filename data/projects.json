@@ -1,0 +1,83 @@
+{
+  "Application Tri Web": {
+    "desc": "Application web permettant de suivre et gérer le tri des déchets au sein d'un campus universitaire.\nLes utilisateurs peuvent consulter les données de recyclage en temps réel, ajouter de nouvelles entrées, et visualiser des statistiques détaillées pour encourager les bonnes pratiques écologiques.",
+    "tech": ["PHP", "SQL", "HTML/CSS"],
+    "points": [
+      "Système complet de gestion des données (ajout, modification, suppression)",
+      "Connexion sécurisée avec gestion des utilisateurs",
+      "Projet orienté écologie et responsabilité environnementale"
+    ],
+    "link": "prochainement",
+    "images": [
+      "./assets/images/AppRecycl1.webp",
+      "./assets/images/AppRecycl2.webp",
+      "./assets/images/AppRecycl3.webp",
+      "./assets/images/AppRecycl4.webp",
+      "./assets/images/AppRecycl5.webp",
+      "./assets/images/AppRecycl6.webp",
+      "./assets/images/AppRecycl7.webp",
+      "./assets/images/AppRecycl8.webp"
+    ]
+  },
+  "Morpion JavaFX": {
+    "desc": "Jeu de morpion développé en Java avec JavaFX, intégrant une interface graphique animée et une logique de jeu structurée.\nLe projet met l'accent sur la programmation orientée objet et la gestion des événements utilisateur.",
+    "tech": ["Java", "JavaFX", "POO"],
+    "points": [
+      "Gestion des tours, des scores et des états de la partie",
+      "Code clair, structuré et maintenable",
+      "Projet pédagogique axé sur les bonnes pratiques Java, JavaFX et POO"
+    ],
+    "link": "http://github.com/TiboTsr/IHM-Morpion",
+    "images": [
+      "./assets/images/Morpion1.webp",
+      "./assets/images/Morpion2.webp",
+      "./assets/images/Morpion3.webp",
+      "./assets/images/Morpion4.webp"
+    ]
+  },
+  "Jeu Timeline": {
+    "desc": "Jeu inspiré du Timeline, où les cartes sont générées dynamiquement à partir de fichiers JSON.\nLe joueur doit placer correctement des événements dans l'ordre chronologique, avec une interface intuitive et fluide.",
+    "tech": ["Java", "JSON", "UX"],
+    "points": [
+      "Chargement dynamique des cartes depuis des fichiers JSON",
+      "Interaction fluide grâce au drag & drop",
+      "Facilité d'ajout de nouveaux decks sans modifier le code"
+    ],
+    "link": "indisponible",
+    "images": []
+  },
+  "Application web Météo": {
+    "desc": "Application web permettant de consulter la météo actuelle et les prévisions sur plusieurs jours à partir d'une API externe. L'utilisateur peut rechercher une ville et visualiser des informations détaillées sur les conditions météorologiques.",
+    "tech": ["JavaScript", "API", "HTML", "CSS"],
+    "points": [
+      "Connexion à une API météo (OpenWeather)",
+      "Gestion des erreurs réseau et des villes inconnues",
+      "Design responsive adapté au mobiles",
+      "Affichage des prévisions sur plusieurs jours"
+    ],
+    "link": "prochainement",
+    "images": [
+      "./assets/images/AppMeteo1.webp",
+      "./assets/images/AppMeteo2.webp",
+      "./assets/images/AppMeteo3.webp",
+      "./assets/images/AppMeteo4.webp"
+    ]
+  },
+  "Bot Discord mise à jour Apple": {
+    "desc": "Bot Discord automatisé qui surveille les nouvelles mises à jour des appareils Apple et envoie des notifications sur un serveur Discord dès qu'une mise à jour est détectée.",
+    "tech": ["Python", "SQL"],
+    "points": [
+      "Récupération automatique des données via une API",
+      "Envoi de notifications en temps réel sur Discord",
+      "Stockage des mises à jour en base de données SQL",
+      "Gestion des erreurs et des doublons"
+    ],
+    "link": "https://applebot.tibotsr.dev/",
+    "images": [
+      "./assets/images/AppleBot1.webp",
+      "./assets/images/AppleBot2.webp",
+      "./assets/images/AppleBot3.webp",
+      "./assets/images/AppleBot4.webp"
+    ]
+  }
+}

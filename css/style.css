@@ -56,6 +56,43 @@ body {
   font-family: "Montserrat", sans-serif;
   overflow-x: hidden;
   transition: background-color 0.15s ease, color 0.15s ease;
+  cursor: auto;
+}
+
+a, button, .project-card {
+    cursor: none;
+}
+
+.custom-cursor {
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    background: radial-gradient(circle at 35% 35%, rgba(0, 242, 255, 0.1), transparent);
+}
+
+.custom-cursor-dot {
+    width: 5px;
+    height: 5px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 8px var(--primary);
+}
+
+body.hovering .custom-cursor {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 242, 255, 0.08);
+    box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
 }
 
 /* Bloquer le scroll pendant le chargement */
@@ -2212,4 +2249,59 @@ textarea.form-input {
     margin: 1.5rem 1rem;
     padding: 1.25rem;
   }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: #000;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.social-links a.copied .tooltip {
+  opacity: 1;
+}
+
+
+/* --- EASTER EGG KONAMI CODE --- */
+
+/* La classe qui sera ajoutée au body */
+.chaos-mode {
+    animation: barrelRoll 2s ease-in-out;
+    filter: invert(1) hue-rotate(180deg); /* Couleurs psychédéliques */
+}
+
+/* Force la police Comic Sans partout (le cauchemar du dev) */
+.chaos-mode * {
+    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Sans", sans-serif !important;
+}
+
+/* L'animation du tonneau */
+@keyframes barrelRoll {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(0.5); } /* Le site s'éloigne */
+    100% { transform: rotate(360deg) scale(1); } /* Et revient à l'endroit */
+}
+
+#scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--primary); 
+    z-index: 99999;
+    box-shadow: 0 0 10px var(--primary);
+    transition: width 0.1s;
 }

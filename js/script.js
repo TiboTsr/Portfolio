@@ -255,6 +255,17 @@ document.addEventListener("DOMContentLoaded", () => {
         link.classList.add("active");
       }
     });
+
+    // Scroll Progress Bar
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    let scrollPercent = (scrollTop / scrollHeight) * 100;
+    scrollPercent = Math.min(scrollPercent, 100);
+    
+    const progressBar = document.getElementById("scrollProgress");
+    if(progressBar) {
+        progressBar.style.width = scrollPercent + "%";
+    }
   });
 
   // 7. Smooth Scroll pour les liens
@@ -309,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 8. Modal Logic avec Animations
+  // 8. Modal Logic avec Animations & Chargement Dynamique
   const modal = document.getElementById("projectModal");
   const mTitle = document.getElementById("modalTitle");
   const mDesc = document.getElementById("modalDesc");
@@ -318,89 +329,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const mLinks = document.getElementById("modalLinks");
   const closeBtn = document.querySelector(".close-modal");
 
-  const projectsInfo = {
-    "Application Tri Web": {
-      desc: "Application web permettant de suivre et gérer le tri des déchets au sein d'un campus universitaire.\nLes utilisateurs peuvent consulter les données de recyclage en temps réel, ajouter de nouvelles entrées, et visualiser des statistiques détaillées pour encourager les bonnes pratiques écologiques.",
-      tech: ["PHP", "SQL", "HTML/CSS"],
-      points: [
-        "Système complet de gestion des données (ajout, modification, suppression)",
-        "Connexion sécurisée avec gestion des utilisateurs",
-        "Projet orienté écologie et responsabilité environnementale",
-      ],
-      link: "prochainement",
-      images: [
-        "./assets/images/AppRecycl1.png",
-        "./assets/images/AppRecycl2.png",
-        "./assets/images/AppRecycl3.png",
-        "./assets/images/AppRecycl4.png",
-        "./assets/images/AppRecycl5.png",
-        "./assets/images/AppRecycl6.png",
-        "./assets/images/AppRecycl7.png",
-        "./assets/images/AppRecycl8.png",
-      ],
-    },
-    "Morpion JavaFX": {
-      desc: "Jeu de morpion développé en Java avec JavaFX, intégrant une interface graphique animée et une logique de jeu structurée.\nLe projet met l'accent sur la programmation orientée objet et la gestion des événements utilisateur.",
-      tech: ["Java", "JavaFX", "POO"],
-      points: [
-        "Gestion des tours, des scores et des états de la partie",
-        "Code clair, structuré et maintenable",
-        "Projet pédagogique axé sur les bonnes pratiques Java, JavaFX et POO",
-      ],
-      link: "http://github.com/TiboTsr/IHM-Morpion",
-      images: [
-        "./assets/images/Morpion1.png",
-        "./assets/images/Morpion2.png",
-        "./assets/images/Morpion3.png",
-        "./assets/images/Morpion4.png",
-      ],
-    },
-    "Jeu Timeline": {
-      desc: "Jeu inspiré du Timeline, où les cartes sont générées dynamiquement à partir de fichiers JSON.\nLe joueur doit placer correctement des événements dans l'ordre chronologique, avec une interface intuitive et fluide.",
-      tech: ["Java", "JSON", "UX"],
-      points: [
-        "Chargement dynamique des cartes depuis des fichiers JSON",
-        "Interaction fluide grâce au drag & drop",
-        "Facilité d'ajout de nouveaux decks sans modifier le code",
-      ],
-      link: "indisponible",
-      images: [],
-    },
-    "Application web Météo": {
-      desc: "Application web permettant de consulter la météo actuelle et les prévisions sur plusieurs jours à partir d'une API externe. L'utilisateur peut rechercher une ville et visualiser des informations détaillées sur les conditions météorologiques.",
-      tech: ["JavaScript", "API", "HTML", "CSS"],
-      points: [
-        "Connexion à une API météo (OpenWeather)",
-        "Gestion des erreurs réseau et des villes inconnues",
-        "Design responsive adapté au mobiles",
-        "Affichage des prévisions sur plusieurs jours",
-      ],
-      link: "prochainement",
-      images: [
-        "./assets/images/AppMeteo1.png",
-        "./assets/images/AppMeteo2.png",
-        "./assets/images/AppMeteo3.png",
-        "./assets/images/AppMeteo4.png",
-      ],
-    },
-    "Bot Discord mise à jour Apple": {
-      desc: "Bot Discord automatisé qui surveille les nouvelles mises à jour des appareils Apple et envoie des notifications sur un serveur Discord dès qu'une mise à jour est détectée.",
-      tech: ["Python", "SQL"],
-      points: [
-        "Récupération automatique des données via une API",
-        "Envoi de notifications en temps réel sur Discord",
-        "Stockage des mises à jour en base de données SQL",
-        "Gestion des erreurs et des doublons",
-      ],
-      link: "https://applebot.tibotsr.dev/",
-      images: [
-        "./assets/images/AppleBot1.png",
-        "./assets/images/AppleBot2.png",
-        "./assets/images/AppleBot3.png",
-        "./assets/images/AppleBot4.png",
-      ],
-    },
-  };
+  let projectsInfo = {};
+
+  fetch('data/projects.json')
+    .then(response => response.json())
+    .then(data => {
+        projectsInfo = data;
+    })
+    .catch(error => console.error("Erreur lors du chargement des projets :", error));
 
   let currentCarouselIndex = 0;
 
@@ -819,3 +755,69 @@ window.addEventListener("click", (e) => {
     closeModal();
   }
 });
+
+// Gestion du curseur personnalisé
+const cursor = document.querySelector('.custom-cursor');
+const cursorDot = document.querySelector('.custom-cursor-dot');
+
+if (cursor && cursorDot) {
+    document.addEventListener('mousemove', (e) => {
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+        
+        cursor.animate({
+            left: e.clientX + 'px',
+            top: e.clientY + 'px'
+        }, { duration: 500, fill: "forwards" });
+    });
+
+    const links = document.querySelectorAll('a, button, .project-card');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+        link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+}
+
+// Fonction pour copier l'email
+function copyEmail(event) {
+    event.preventDefault();
+    const email = 'tibo.tessier@gmail.com';
+    navigator.clipboard.writeText(email).then(() => {
+        const emailLink = event.target.closest('a');
+        if (emailLink) {
+            emailLink.classList.add('copied');
+            setTimeout(() => {
+                emailLink.classList.remove('copied');
+            }, 2000);
+        }
+    }).catch(err => {
+        console.error('Erreur lors de la copie:', err);
+    });
+}
+
+// Fonction pour copier le téléphone
+function copyTel(event) {
+    event.preventDefault();
+    const tel = '07 72 21 54 15';
+    navigator.clipboard.writeText(tel).then(() => {
+        const telLink = event.target.closest('a');
+        if (telLink) {
+            telLink.classList.add('copied');
+            setTimeout(() => {
+                telLink.classList.remove('copied');
+            }, 2000);
+        }
+    }).catch(err => {
+        console.error('Erreur lors de la copie:', err);
+    });
+}
+
+// Easter Egg Console
+  console.log(
+    "%c👋 Salut le Curieux !",
+    "color: #00f2ff; font-size: 20px; font-weight: bold; background: #000; padding: 5px; border-radius: 5px;"
+  );
+  console.log(
+    "%cSi vous voyez ce message, c'est que vous aimez voir ce qu'il y a sous le capot. On devrait s'entendre ! 😉\n\nContactez-moi : github.com/TiboTsr, linkedin.com/in/tibotessier, tibo.tessier@gmail.com",
+    "color: #fff; font-size: 12px; line-height: 1.5;"
+  );
