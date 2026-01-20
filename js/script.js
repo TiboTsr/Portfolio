@@ -778,6 +778,7 @@ if (cursor && cursorDot) {
     });
 }
 
+
 // Fonction pour copier l'email
 function copyEmail(event) {
     event.preventDefault();

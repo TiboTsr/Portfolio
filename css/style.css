@@ -95,6 +95,17 @@ body.hovering .custom-cursor {
     box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
 }
 
+@media (hover: none) and (pointer: coarse) {
+    a, button, .project-card {
+        cursor: auto;
+    }
+    
+    .custom-cursor,
+    .custom-cursor-dot {
+        display: none;
+    }
+}
+
 /* Bloquer le scroll pendant le chargement */
 body.no-scroll {
   overflow: hidden;
@@ -2271,27 +2282,6 @@ textarea.form-input {
 
 .social-links a.copied .tooltip {
   opacity: 1;
-}
-
-
-/* --- EASTER EGG KONAMI CODE --- */
-
-/* La classe qui sera ajoutée au body */
-.chaos-mode {
-    animation: barrelRoll 2s ease-in-out;
-    filter: invert(1) hue-rotate(180deg); /* Couleurs psychédéliques */
-}
-
-/* Force la police Comic Sans partout (le cauchemar du dev) */
-.chaos-mode * {
-    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Sans", sans-serif !important;
-}
-
-/* L'animation du tonneau */
-@keyframes barrelRoll {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(0.5); } /* Le site s'éloigne */
-    100% { transform: rotate(360deg) scale(1); } /* Et revient à l'endroit */
 }
 
 #scrollProgress {
