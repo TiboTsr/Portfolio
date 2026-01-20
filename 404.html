@@ -320,6 +320,7 @@
       <h1>Page non trouvée</h1>
       <p>
         Oups ! La page que vous recherchez semble s'être perdue dans le vide.<br />
+        Peut-être qu'un bug l'a emportée dans une autre dimension...
       </p>
       <a href="/" class="btn-home">
         <i class="fas fa-home"></i>
@@ -330,6 +331,36 @@
         <i class="fas fa-question"></i>
         <i class="fas fa-bug"></i>
       </div>
+      
+      <!-- Easter Egg: cliquer 5 fois sur le 404 -->
+      <script>
+        let clickCount = 0;
+        const glitch = document.querySelector('.glitch');
+        
+        glitch.addEventListener('click', () => {
+          clickCount++;
+          if (clickCount === 5) {
+            glitch.style.animation = 'glitch-skew 0.1s infinite, rainbow 2s linear infinite';
+            document.body.style.animation = 'rotateHue 5s linear infinite';
+            setTimeout(() => {
+              alert('🎉 Bravo ! Vous avez trouvé l\'easter egg ! 🎉');
+            }, 500);
+          }
+        });
+      </script>
+      <style>
+        @keyframes rainbow {
+          0% { color: #00f2ff; }
+          25% { color: #ff00ff; }
+          50% { color: #00ff00; }
+          75% { color: #ffff00; }
+          100% { color: #00f2ff; }
+        }
+        @keyframes rotateHue {
+          0% { filter: hue-rotate(0deg); }
+          100% { filter: hue-rotate(360deg); }
+        }
+      </style>
     </div>
   </body>
 </html>

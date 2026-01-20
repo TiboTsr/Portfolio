@@ -1,9 +1,15 @@
 User-agent: *
 Allow: /
 
+# Interdire l'indexation des dossiers internes
 Disallow: /.vscode/
-Disallow: /assets/
-Disallow: /css/
-Disallow: /js/
+
+# Autoriser les ressources publiques (important pour le SEO)
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Autoriser les fichiers importants
+Allow: /CV_Tibo_Tessier.pdf
 
 Sitemap: https://tibotsr.dev/sitemap.xml

@@ -822,3 +822,216 @@ function copyTel(event) {
     "%cSi vous voyez ce message, c'est que vous aimez voir ce qu'il y a sous le capot. On devrait s'entendre ! 😉\n\nContactez-moi : github.com/TiboTsr, linkedin.com/in/tibotessier, tibo.tessier@gmail.com",
     "color: #fff; font-size: 12px; line-height: 1.5;"
   );
+
+
+// Scroll to Top Button
+const scrollToTopBtn = document.querySelector('.scroll-to-top');
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 500) {
+    scrollToTopBtn.classList.add('visible');
+  } else {
+    scrollToTopBtn.classList.remove('visible');
+  }
+});
+
+scrollToTopBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+// Statistiques - Compteurs animés
+const statNumbers = document.querySelectorAll('.stat-number');
+
+const animateCounter = (element) => {
+  const target = parseInt(element.getAttribute('data-target'));
+  const duration = 2000;
+  const increment = target / (duration / 16);
+  let current = 0;
+  
+  const updateCounter = () => {
+    current += increment;
+    if (current < target) {
+      element.textContent = Math.floor(current);
+      requestAnimationFrame(updateCounter);
+    } else {
+      element.textContent = target;
+    }
+  };
+  
+  updateCounter();
+};
+
+// Observer pour démarrer l'animation quand la section est visible
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      statNumbers.forEach(stat => {
+        if (stat.textContent === '0') {
+          animateCounter(stat);
+        }
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) {
+  statsObserver.observe(statsSection);
+}
+
+// Easter Egg - Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  
+  if (key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    
+    if (konamiIndex === konamiCode.length) {
+      activateKonamiEasterEgg();
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+
+function activateKonamiEasterEgg() {
+  const message = document.createElement('div');
+  message.className = 'easter-egg-message';
+  message.innerHTML = `
+    <h3>🎮 Konami Code Activé ! 🎮</h3>
+    <p>Bravo ! Vous avez trouvé l'Easter Egg secret !</p>
+    <p style="font-size: 3rem; margin: 1rem 0;">🚀✨🎉</p>
+  `;
+  
+  document.body.appendChild(message);
+  document.body.classList.add('konami-activated');
+  
+  setTimeout(() => {
+    message.remove();
+    document.body.classList.remove('konami-activated');
+  }, 5000);
+  
+  // Confetti effect
+  for (let i = 0; i < 50; i++) {
+    createConfetti();
+  }
+}
+
+function createConfetti() {
+  const confetti = document.createElement('div');
+  confetti.style.cssText = `
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: ${['#00f2ff', '#7000ff', '#ff00ff', '#00ff00'][Math.floor(Math.random() * 4)]};
+    left: ${Math.random() * 100}vw;
+    top: -10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10001;
+    animation: confettiFall ${2 + Math.random() * 3}s linear forwards;
+  `;
+  
+  document.body.appendChild(confetti);
+  
+  setTimeout(() => confetti.remove(), 5000);
+}
+
+// Animation CSS pour les confettis
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes confettiFall {
+    to {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+// Easter Egg - Triple clic sur le logo
+const loaderLogo = document.querySelector('.loader-logo');
+if (loaderLogo) {
+  let logoClickCount = 0;
+  let logoClickTimer;
+  
+  loaderLogo.addEventListener('click', () => {
+    logoClickCount++;
+    clearTimeout(logoClickTimer);
+    
+    if (logoClickCount === 3) {
+      console.log('%c🎊 Triple clic détecté ! Vous êtes rapide ! 🎊', 'color: #00f2ff; font-size: 16px; font-weight: bold;');
+      logoClickCount = 0;
+    } else {
+      logoClickTimer = setTimeout(() => {
+        logoClickCount = 0;
+      }, 500);
+    }
+  });
+}
+
+// Amélioration du mode sombre/clair avec notification
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+  const originalClickHandler = themeToggle.onclick;
+  
+  themeToggle.addEventListener('click', () => {
+    const mode = document.body.classList.contains('light-mode') ? 'clair' : 'sombre';
+    
+    // Petite notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      z-index: 9999;
+      animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = `Mode ${mode} activé`;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => notification.remove(), 300);
+    }, 2000);
+  });
+}
+
+const notifStyle = document.createElement('style');
+notifStyle.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(notifStyle);
