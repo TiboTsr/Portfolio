@@ -1840,8 +1840,8 @@ html {
 }
 
 .carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 10px !important;
+  height: 10px !important;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
@@ -1851,7 +1851,7 @@ html {
 
 .carousel-dot.active {
   background: var(--primary);
-  width: 28px;
+  width: 28px !important;
   border-radius: 5px;
 }
 
@@ -2494,8 +2494,8 @@ body {
 }
 
 .carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 10px !important;
+  height: 10px !important;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
@@ -2505,6 +2505,6 @@ body {
 
 .carousel-dot.active {
   background: var(--primary);
-  width: 28px;
+  width: 28px !important;
   border-radius: 5px;
 }
