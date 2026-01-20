@@ -34,7 +34,6 @@
   --modal-surface-2: #eef2ff;
 }
 
-/* Neutraliser les pseudos décoratifs pour éviter qu'ils bloquent les clics */
 .loader-logo::before,
 .progress-container::before,
 .project-card::before,
@@ -61,6 +60,18 @@ body {
 
 a, button, .project-card {
     cursor: none;
+}
+
+.no-cursor a,
+.no-cursor button,
+.no-cursor .project-card {
+  cursor: auto;
+}
+
+.no-cursor .custom-cursor,
+.no-cursor .custom-cursor-dot,
+.no-cursor .glow-point {
+  display: none !important;
 }
 
 .custom-cursor {
@@ -93,6 +104,21 @@ body.hovering .custom-cursor {
     height: 40px;
     background-color: rgba(0, 242, 255, 0.08);
     box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    a, button, .project-card {
+        cursor: auto;
+    }
+    
+    .custom-cursor,
+    .custom-cursor-dot {
+        display: none;
+    }
+
+  .glow-point {
+    display: none !important;
+  }
 }
 
 /* Bloquer le scroll pendant le chargement */
@@ -1773,12 +1799,6 @@ html {
   border-color: rgba(15, 23, 42, 0.08);
 }
 
-@media (max-width: 600px) {
-  .carousel-image {
-    max-height: 50vh;
-  }
-}
-
 .carousel-btn {
   position: absolute;
   top: 50%;
@@ -1820,23 +1840,22 @@ html {
 }
 
 .carousel-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px !important;
+  height: 8px !important;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
+  margin: 0 4px;
 }
 
 .carousel-dot.active {
-  background: var(--primary);
-  width: 28px;
-  border-radius: 5px;
-}
-
-.carousel-dot:hover {
-  background: rgba(0, 242, 255, 0.6);
+  background: var(--primary) !important;
+  width: 8px !important;
+  border-radius: 50%;
+  opacity: 1;
 }
 
 .modal-content p {
@@ -1884,7 +1903,6 @@ html {
 
 /* Responsive */
 @media (max-width: 768px) {
-  /* Remove legacy hidden state; visibility is controlled via animated dropdown rules above */
   .hero-content h1 {
     font-size: 3.5rem;
   }
@@ -2273,27 +2291,6 @@ textarea.form-input {
   opacity: 1;
 }
 
-
-/* --- EASTER EGG KONAMI CODE --- */
-
-/* La classe qui sera ajoutée au body */
-.chaos-mode {
-    animation: barrelRoll 2s ease-in-out;
-    filter: invert(1) hue-rotate(180deg); /* Couleurs psychédéliques */
-}
-
-/* Force la police Comic Sans partout (le cauchemar du dev) */
-.chaos-mode * {
-    font-family: "Comic Sans MS", "Chalkboard SE", "Comic Sans", sans-serif !important;
-}
-
-/* L'animation du tonneau */
-@keyframes barrelRoll {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(0.5); } /* Le site s'éloigne */
-    100% { transform: rotate(360deg) scale(1); } /* Et revient à l'endroit */
-}
-
 #scrollProgress {
     position: fixed;
     top: 0;
@@ -2304,4 +2301,193 @@ textarea.form-input {
     z-index: 99999;
     box-shadow: 0 0 10px var(--primary);
     transition: width 0.1s;
+}
+
+/* Mode sombre/clair - Amélioration visuelle */
+.light-mode {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Statistiques Section */
+.stats-section {
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, var(--glass) 0%, transparent 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 3rem auto 0;
+}
+
+.stat-card {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.stat-card:hover::before {
+  left: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--primary);
+  box-shadow: 0 10px 40px rgba(0, 242, 255, 0.2);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary);
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.scroll-to-top:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 242, 255, 0.4);
+}
+
+.scroll-to-top i {
+  color: var(--text);
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.scroll-to-top:hover i {
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .btn, button, a.btn {
+    min-height: 48px;
+    min-width: 48px;
+    padding: 1rem 1.5rem;
+  }
+  
+  .social-links a {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .scroll-to-top {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+.konami-activated {
+  animation: rainbowBackground 5s ease infinite;
+}
+
+@keyframes rainbowBackground {
+  0%, 100% { --primary: #00f2ff; }
+  25% { --primary: #ff00ff; }
+  50% { --primary: #00ff00; }
+  75% { --primary: #ffff00; }
+}
+
+.easter-egg-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 2px solid var(--primary);
+  border-radius: 20px;
+  padding: 2rem 3rem;
+  z-index: 10000;
+  text-align: center;
+  animation: easterEggPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 20px 60px rgba(0, 242, 255, 0.4);
+}
+
+@keyframes easterEggPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.easter-egg-message h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

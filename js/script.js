@@ -2,6 +2,8 @@
 document.body.classList.add("no-scroll");
 
 document.addEventListener("DOMContentLoaded", () => {
+  const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
 
@@ -116,9 +118,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  let allCarouselImages = [];
+  let imagesLoaded = 0;
+  let imagesToLoad = 0;
+  let preloadDone = false;
+
+  function collectCarouselImages() {
+    allCarouselImages = [];
+    if (projectsInfo && projectsInfo.projects) {
+      projectsInfo.projects.forEach(project => {
+        if (Array.isArray(project.images)) {
+          allCarouselImages.push(...project.images);
+        }
+      });
+    }
+    imagesToLoad = allCarouselImages.length;
+  }
+
+  function preloadImages(callback) {
+    if (imagesToLoad === 0) return callback();
+    allCarouselImages.forEach(src => {
+      const img = new window.Image();
+      img.onload = img.onerror = () => {
+        imagesLoaded++;
+        if (imagesLoaded === imagesToLoad && !preloadDone) {
+          preloadDone = true;
+          callback();
+        }
+      };
+      img.src = src;
+    });
+  }
+
+  function finishLoaderAfterImages() {
+    collectCarouselImages();
+    preloadImages(() => {
+      gsap.to(loader, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          loader.style.display = "none";
+          document.body.classList.remove("no-scroll");
+          const firstLink = document.querySelector('.nav-link[href="#accueil"]');
+          if (firstLink) firstLink.classList.add("active");
+        },
+      });
+    });
+  }
+
   if (progressBar && percentage && status && loader) {
     let progress = 0;
-
     const loadingSteps = [
       { percent: 20, text: "Réveil des serveurs..." },
       { percent: 40, text: "Chargement des ressources..." },
@@ -127,48 +177,31 @@ document.addEventListener("DOMContentLoaded", () => {
       { percent: 100, text: "Prêt !" },
     ];
     let currentStep = 0;
-
     const updateProgress = () => {
       if (currentStep < loadingSteps.length) {
         const step = loadingSteps[currentStep];
         const increment = (step.percent - progress) / 10;
-
         const progressInterval = setInterval(() => {
           progress += increment;
           if (progress >= step.percent) {
             progress = step.percent;
             clearInterval(progressInterval);
             currentStep++;
-
             if (currentStep < loadingSteps.length) {
               setTimeout(updateProgress, 100);
             } else {
+              // Instead of ending loader immediately, wait for images
               setTimeout(() => {
-                gsap.to(loader, {
-                  opacity: 0,
-                  duration: 0.5,
-                  ease: "power2.inOut",
-                  onComplete: () => {
-                    loader.style.display = "none";
-                    document.body.classList.remove("no-scroll");
-                    const firstLink = document.querySelector(
-                      '.nav-link[href="#accueil"]'
-                    );
-                    if (firstLink) firstLink.classList.add("active");
-                  },
-                });
+                finishLoaderAfterImages();
               }, 200);
             }
           }
-
           progressBar.style.width = progress + "%";
           percentage.textContent = Math.floor(progress) + "%";
         }, 20);
-
         status.textContent = step.text;
       }
     };
-
     setTimeout(updateProgress, 400);
   } else {
     const firstLink = document.querySelector('.nav-link[href="#accueil"]');
@@ -183,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. Effet de lumière sur la grille au passage de la souris
   const glowPoint = document.querySelector(".glow-point");
-  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
   if (glowPoint) {
     if (!isTouchDevice) {
       document.addEventListener("mousemove", (e) => {
@@ -760,27 +792,33 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Gestion du curseur personnalisé
-const cursor = document.querySelector('.custom-cursor');
-const cursorDot = document.querySelector('.custom-cursor-dot');
+// Gestion du curseur personnalisé (désactivé sur appareils tactiles)
+(() => {
+  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+  if (isTouchDevice) return;
 
-if (cursor && cursorDot) {
+  const cursor = document.querySelector('.custom-cursor');
+  const cursorDot = document.querySelector('.custom-cursor-dot');
+
+  if (cursor && cursorDot) {
     document.addEventListener('mousemove', (e) => {
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-        
-        cursor.animate({
-            left: e.clientX + 'px',
-            top: e.clientY + 'px'
-        }, { duration: 500, fill: "forwards" });
+      cursorDot.style.left = e.clientX + 'px';
+      cursorDot.style.top = e.clientY + 'px';
+          
+      cursor.animate({
+        left: e.clientX + 'px',
+        top: e.clientY + 'px'
+      }, { duration: 500, fill: "forwards" });
     });
 
     const links = document.querySelectorAll('a, button, .project-card');
     links.forEach(link => {
-        link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-        link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+      link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
-}
+  }
+})();
+
 
 // Fonction pour copier l'email
 function copyEmail(event) {
@@ -825,3 +863,216 @@ function copyTel(event) {
     "%cSi vous voyez ce message, c'est que vous aimez voir ce qu'il y a sous le capot. On devrait s'entendre ! 😉\n\nContactez-moi : github.com/TiboTsr, linkedin.com/in/tibotessier, tibo.tessier@gmail.com",
     "color: #fff; font-size: 12px; line-height: 1.5;"
   );
+
+
+// Scroll to Top Button
+const scrollToTopBtn = document.querySelector('.scroll-to-top');
+
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 500) {
+    scrollToTopBtn.classList.add('visible');
+  } else {
+    scrollToTopBtn.classList.remove('visible');
+  }
+});
+
+scrollToTopBtn.addEventListener('click', () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+});
+
+// Statistiques - Compteurs animés
+const statNumbers = document.querySelectorAll('.stat-number');
+
+const animateCounter = (element) => {
+  const target = parseInt(element.getAttribute('data-target'));
+  const duration = 2000;
+  const increment = target / (duration / 16);
+  let current = 0;
+  
+  const updateCounter = () => {
+    current += increment;
+    if (current < target) {
+      element.textContent = Math.floor(current);
+      requestAnimationFrame(updateCounter);
+    } else {
+      element.textContent = target;
+    }
+  };
+  
+  updateCounter();
+};
+
+// Observer pour démarrer l'animation quand la section est visible
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      statNumbers.forEach(stat => {
+        if (stat.textContent === '0') {
+          animateCounter(stat);
+        }
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+const statsSection = document.querySelector('.stats-section');
+if (statsSection) {
+  statsObserver.observe(statsSection);
+}
+
+// Easter Egg - Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  
+  if (key === konamiCode[konamiIndex]) {
+    konamiIndex++;
+    
+    if (konamiIndex === konamiCode.length) {
+      activateKonamiEasterEgg();
+      konamiIndex = 0;
+    }
+  } else {
+    konamiIndex = 0;
+  }
+});
+
+function activateKonamiEasterEgg() {
+  const message = document.createElement('div');
+  message.className = 'easter-egg-message';
+  message.innerHTML = `
+    <h3>🎮 Konami Code Activé ! 🎮</h3>
+    <p>Bravo ! Vous avez trouvé l'Easter Egg secret !</p>
+    <p style="font-size: 3rem; margin: 1rem 0;">🚀✨🎉</p>
+  `;
+  
+  document.body.appendChild(message);
+  document.body.classList.add('konami-activated');
+  
+  setTimeout(() => {
+    message.remove();
+    document.body.classList.remove('konami-activated');
+  }, 5000);
+  
+  // Confetti effect
+  for (let i = 0; i < 50; i++) {
+    createConfetti();
+  }
+}
+
+function createConfetti() {
+  const confetti = document.createElement('div');
+  confetti.style.cssText = `
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: ${['#00f2ff', '#7000ff', '#ff00ff', '#00ff00'][Math.floor(Math.random() * 4)]};
+    left: ${Math.random() * 100}vw;
+    top: -10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10001;
+    animation: confettiFall ${2 + Math.random() * 3}s linear forwards;
+  `;
+  
+  document.body.appendChild(confetti);
+  
+  setTimeout(() => confetti.remove(), 5000);
+}
+
+// Animation CSS pour les confettis
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes confettiFall {
+    to {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+// Easter Egg - Triple clic sur le logo
+const loaderLogo = document.querySelector('.loader-logo');
+if (loaderLogo) {
+  let logoClickCount = 0;
+  let logoClickTimer;
+  
+  loaderLogo.addEventListener('click', () => {
+    logoClickCount++;
+    clearTimeout(logoClickTimer);
+    
+    if (logoClickCount === 3) {
+      console.log('%c🎊 Triple clic détecté ! Vous êtes rapide ! 🎊', 'color: #00f2ff; font-size: 16px; font-weight: bold;');
+      logoClickCount = 0;
+    } else {
+      logoClickTimer = setTimeout(() => {
+        logoClickCount = 0;
+      }, 500);
+    }
+  });
+}
+
+// Amélioration du mode sombre/clair avec notification
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+  const originalClickHandler = themeToggle.onclick;
+  
+  themeToggle.addEventListener('click', () => {
+    const mode = document.body.classList.contains('light-mode') ? 'clair' : 'sombre';
+    
+    // Petite notification
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      z-index: 9999;
+      animation: slideIn 0.3s ease;
+    `;
+    notification.textContent = `Mode ${mode} activé`;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease';
+      setTimeout(() => notification.remove(), 300);
+    }, 2000);
+  });
+}
+
+const notifStyle = document.createElement('style');
+notifStyle.textContent = `
+  @keyframes slideIn {
+    from {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(400px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(notifStyle);
