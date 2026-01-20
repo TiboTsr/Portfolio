@@ -1840,23 +1840,22 @@ html {
 }
 
 .carousel-dot {
-  width: 10px !important;
-  height: 10px !important;
+  width: 8px !important;
+  height: 8px !important;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.3);
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  padding: 0;
+  margin: 0 4px;
 }
 
 .carousel-dot.active {
-  background: var(--primary);
-  width: 28px !important;
-  border-radius: 5px;
-}
-
-.carousel-dot:hover {
-  background: rgba(0, 242, 255, 0.6);
+  background: var(--primary) !important;
+  width: 8px !important;
+  border-radius: 50%;
+  opacity: 1;
 }
 
 .modal-content p {
@@ -2491,20 +2490,4 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-.carousel-dot {
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.carousel-dot.active {
-  background: var(--primary);
-  width: 28px !important;
-  border-radius: 5px;
 }
