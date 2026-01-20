@@ -34,7 +34,6 @@
   --modal-surface-2: #eef2ff;
 }
 
-/* Neutraliser les pseudos décoratifs pour éviter qu'ils bloquent les clics */
 .loader-logo::before,
 .progress-container::before,
 .project-card::before,
