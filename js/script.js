@@ -118,9 +118,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+  let allCarouselImages = [];
+  let imagesLoaded = 0;
+  let imagesToLoad = 0;
+  let preloadDone = false;
+
+  function collectCarouselImages() {
+    allCarouselImages = [];
+    if (projectsInfo && projectsInfo.projects) {
+      projectsInfo.projects.forEach(project => {
+        if (Array.isArray(project.images)) {
+          allCarouselImages.push(...project.images);
+        }
+      });
+    }
+    imagesToLoad = allCarouselImages.length;
+  }
+
+  function preloadImages(callback) {
+    if (imagesToLoad === 0) return callback();
+    allCarouselImages.forEach(src => {
+      const img = new window.Image();
+      img.onload = img.onerror = () => {
+        imagesLoaded++;
+        if (imagesLoaded === imagesToLoad && !preloadDone) {
+          preloadDone = true;
+          callback();
+        }
+      };
+      img.src = src;
+    });
+  }
+
+  function finishLoaderAfterImages() {
+    collectCarouselImages();
+    preloadImages(() => {
+      gsap.to(loader, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          loader.style.display = "none";
+          document.body.classList.remove("no-scroll");
+          const firstLink = document.querySelector('.nav-link[href="#accueil"]');
+          if (firstLink) firstLink.classList.add("active");
+        },
+      });
+    });
+  }
+
   if (progressBar && percentage && status && loader) {
     let progress = 0;
-
     const loadingSteps = [
       { percent: 20, text: "Réveil des serveurs..." },
       { percent: 40, text: "Chargement des ressources..." },
@@ -129,48 +177,31 @@ document.addEventListener("DOMContentLoaded", () => {
       { percent: 100, text: "Prêt !" },
     ];
     let currentStep = 0;
-
     const updateProgress = () => {
       if (currentStep < loadingSteps.length) {
         const step = loadingSteps[currentStep];
         const increment = (step.percent - progress) / 10;
-
         const progressInterval = setInterval(() => {
           progress += increment;
           if (progress >= step.percent) {
             progress = step.percent;
             clearInterval(progressInterval);
             currentStep++;
-
             if (currentStep < loadingSteps.length) {
               setTimeout(updateProgress, 100);
             } else {
+              // Instead of ending loader immediately, wait for images
               setTimeout(() => {
-                gsap.to(loader, {
-                  opacity: 0,
-                  duration: 0.5,
-                  ease: "power2.inOut",
-                  onComplete: () => {
-                    loader.style.display = "none";
-                    document.body.classList.remove("no-scroll");
-                    const firstLink = document.querySelector(
-                      '.nav-link[href="#accueil"]'
-                    );
-                    if (firstLink) firstLink.classList.add("active");
-                  },
-                });
+                finishLoaderAfterImages();
               }, 200);
             }
           }
-
           progressBar.style.width = progress + "%";
           percentage.textContent = Math.floor(progress) + "%";
         }, 20);
-
         status.textContent = step.text;
       }
     };
-
     setTimeout(updateProgress, 400);
   } else {
     const firstLink = document.querySelector('.nav-link[href="#accueil"]');

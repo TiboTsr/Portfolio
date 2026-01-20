@@ -332,7 +332,6 @@
         <i class="fas fa-bug"></i>
       </div>
       
-      <!-- Easter Egg: cliquer 5 fois sur le 404 -->
       <script>
         let clickCount = 0;
         const glitch = document.querySelector('.glitch');
@@ -342,9 +341,6 @@
           if (clickCount === 5) {
             glitch.style.animation = 'glitch-skew 0.1s infinite, rainbow 2s linear infinite';
             document.body.style.animation = 'rotateHue 5s linear infinite';
-            setTimeout(() => {
-              alert('🎉 Bravo ! Vous avez trouvé l\'easter egg ! 🎉');
-            }, 500);
           }
         });
       </script>
