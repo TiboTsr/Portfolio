@@ -183,16 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. Effet de lumière sur la grille au passage de la souris
   const glowPoint = document.querySelector(".glow-point");
+  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
   if (glowPoint) {
-    document.addEventListener("mousemove", (e) => {
-      glowPoint.style.left = e.clientX + "px";
-      glowPoint.style.top = e.clientY + "px";
-      glowPoint.style.opacity = "1";
-    });
-
-    document.addEventListener("mouseleave", () => {
-      glowPoint.style.opacity = "0";
-    });
+    if (!isTouchDevice) {
+      document.addEventListener("mousemove", (e) => {
+        glowPoint.style.left = e.clientX + "px";
+        glowPoint.style.top = e.clientY + "px";
+        glowPoint.style.opacity = "1";
+      });
+      document.addEventListener("mouseleave", () => {
+        glowPoint.style.opacity = "0";
+      });
+    } else {
+      glowPoint.style.display = "none";
+    }
   }
 
   // 5. Matrix Canvas Effect
