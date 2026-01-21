@@ -481,6 +481,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  let lastScrollY = 0;
+  // Blocage du scroll de la page derrière le modal, mais autorise le scroll dans le modal
+  let scrollBlockerActive = false;
+  const keysToBlock = [32, 33, 34, 35, 36, 37, 38, 39, 40];
+  function keydownBlocker(e) {
+    // Si le focus est dans le modal, ne bloque pas
+    if (modal && modal.style.display === "flex" && modal.contains(document.activeElement)) return;
+    if (keysToBlock.includes(e.keyCode)) {
+      e.preventDefault();
+    }
+  }
+  function blockPageScroll() {
+    if (scrollBlockerActive) return;
+    window.addEventListener('wheel', preventPageScroll, { passive: false });
+    window.addEventListener('touchmove', preventPageScroll, { passive: false });
+    window.addEventListener('keydown', keydownBlocker, true);
+    scrollBlockerActive = true;
+  }
+  function unblockPageScroll() {
+    if (!scrollBlockerActive) return;
+    window.removeEventListener('wheel', preventPageScroll, { passive: false });
+    window.removeEventListener('touchmove', preventPageScroll, { passive: false });
+    window.removeEventListener('keydown', keydownBlocker, true);
+    scrollBlockerActive = false;
+  }
+  function preventPageScroll(e) {
+    // Si l'événement vient du modal-content ou d'un descendant scrollable, ne bloque pas
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent && modalContent.contains(e.target)) return;
+    e.preventDefault();
+  }
+  // Empêche le scroll chaining (propagation du scroll du modal vers la page)
+  function stopScrollPropagation(el) {
+    if (!el) return;
+    el.addEventListener('wheel', function(e) {
+      const delta = e.deltaY;
+      const up = delta < 0;
+      if (
+        (!up && el.scrollHeight - el.clientHeight - el.scrollTop <= 1) ||
+        (up && el.scrollTop <= 0)
+      ) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+    el.addEventListener('touchmove', function(e) {
+      // Optionnel : on pourrait gérer le scroll chaining tactile ici aussi
+      // Mais la plupart des navigateurs modernes gèrent bien le scroll dans les modaux
+    }, { passive: false });
+  }
   document.querySelectorAll(".btn-detail").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (!modal) return;
@@ -492,8 +541,29 @@ document.addEventListener("DOMContentLoaded", () => {
       renderModalWithCarousel(
         data || { desc: "Détails à venir", tech: [], points: [], link: "#" }
       );
+      lastScrollY = window.scrollY;
       modal.style.display = "flex";
+      // Masque la scrollbar du body sans décaler le contenu
+      const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = "hidden";
+      if (scrollBarWidth > 0) {
+        document.body.style.paddingRight = scrollBarWidth + "px";
+      }
+      blockPageScroll();
+      // Empêche le scroll chaining sur le contenu du modal
+      setTimeout(() => {
+        const modalContent = document.querySelector('.modal-content');
+        stopScrollPropagation(modalContent);
+        // Permet le scroll du modal même si la souris est sur l'overlay
+        if (modal) {
+          modal.addEventListener('wheel', function(e) {
+            if (modalContent) {
+              modalContent.scrollTop += e.deltaY;
+              e.preventDefault();
+            }
+          }, { passive: false });
+        }
+      }, 0);
 
       // Animation GSAP améliorée
       gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.25 });
@@ -531,9 +601,14 @@ document.addEventListener("DOMContentLoaded", () => {
       onComplete: () => {
         modal.style.display = "none";
         document.body.style.overflow = "";
+        document.body.style.paddingRight = "";
+        unblockPageScroll();
+        // Restaure la position de scroll
+        window.scrollTo({ top: lastScrollY });
       },
     });
     gsap.to(modal, { opacity: 0, duration: 0.2 });
+    document.body.classList.remove("no-scroll");
   };
 
   closeBtn?.addEventListener("click", closeModal);
@@ -905,7 +980,6 @@ const animateCounter = (element) => {
   updateCounter();
 };
 
-// Observer pour démarrer l'animation quand la section est visible
 const statsObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -922,101 +996,6 @@ const statsObserver = new IntersectionObserver((entries) => {
 const statsSection = document.querySelector('.stats-section');
 if (statsSection) {
   statsObserver.observe(statsSection);
-}
-
-// Easter Egg - Konami Code: ↑ ↑ ↓ ↓ ← → ← → B A
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-
-document.addEventListener('keydown', (e) => {
-  const key = e.key.toLowerCase();
-  
-  if (key === konamiCode[konamiIndex]) {
-    konamiIndex++;
-    
-    if (konamiIndex === konamiCode.length) {
-      activateKonamiEasterEgg();
-      konamiIndex = 0;
-    }
-  } else {
-    konamiIndex = 0;
-  }
-});
-
-function activateKonamiEasterEgg() {
-  const message = document.createElement('div');
-  message.className = 'easter-egg-message';
-  message.innerHTML = `
-    <h3>🎮 Konami Code Activé ! 🎮</h3>
-    <p>Bravo ! Vous avez trouvé l'Easter Egg secret !</p>
-    <p style="font-size: 3rem; margin: 1rem 0;">🚀✨🎉</p>
-  `;
-  
-  document.body.appendChild(message);
-  document.body.classList.add('konami-activated');
-  
-  setTimeout(() => {
-    message.remove();
-    document.body.classList.remove('konami-activated');
-  }, 5000);
-  
-  // Confetti effect
-  for (let i = 0; i < 50; i++) {
-    createConfetti();
-  }
-}
-
-function createConfetti() {
-  const confetti = document.createElement('div');
-  confetti.style.cssText = `
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background: ${['#00f2ff', '#7000ff', '#ff00ff', '#00ff00'][Math.floor(Math.random() * 4)]};
-    left: ${Math.random() * 100}vw;
-    top: -10px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 10001;
-    animation: confettiFall ${2 + Math.random() * 3}s linear forwards;
-  `;
-  
-  document.body.appendChild(confetti);
-  
-  setTimeout(() => confetti.remove(), 5000);
-}
-
-// Animation CSS pour les confettis
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes confettiFall {
-    to {
-      transform: translateY(100vh) rotate(360deg);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(style);
-
-// Easter Egg - Triple clic sur le logo
-const loaderLogo = document.querySelector('.loader-logo');
-if (loaderLogo) {
-  let logoClickCount = 0;
-  let logoClickTimer;
-  
-  loaderLogo.addEventListener('click', () => {
-    logoClickCount++;
-    clearTimeout(logoClickTimer);
-    
-    if (logoClickCount === 3) {
-      console.log('%c🎊 Triple clic détecté ! Vous êtes rapide ! 🎊', 'color: #00f2ff; font-size: 16px; font-weight: bold;');
-      logoClickCount = 0;
-    } else {
-      logoClickTimer = setTimeout(() => {
-        logoClickCount = 0;
-      }, 500);
-    }
-  });
 }
 
 // Amélioration du mode sombre/clair avec notification
