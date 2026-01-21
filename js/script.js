@@ -867,32 +867,7 @@ window.addEventListener("click", (e) => {
   }
 });
 
-// Gestion du curseur personnalisé (désactivé sur appareils tactiles)
-(() => {
-  const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-  if (isTouchDevice) return;
 
-  const cursor = document.querySelector('.custom-cursor');
-  const cursorDot = document.querySelector('.custom-cursor-dot');
-
-  if (cursor && cursorDot) {
-    document.addEventListener('mousemove', (e) => {
-      cursorDot.style.left = e.clientX + 'px';
-      cursorDot.style.top = e.clientY + 'px';
-          
-      cursor.animate({
-        left: e.clientX + 'px',
-        top: e.clientY + 'px'
-      }, { duration: 500, fill: "forwards" });
-    });
-
-    const links = document.querySelectorAll('a, button, .project-card');
-    links.forEach(link => {
-      link.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-      link.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-    });
-  }
-})();
 
 
 // Fonction pour copier l'email
