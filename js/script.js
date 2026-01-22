@@ -1,3 +1,32 @@
+// Masque la carte WakaTime au chargement (au cas où le JS se charge après le DOM)
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('wakatime-hours');
+  if (el) {
+    const card = el.closest('.stat-card');
+    if (card) card.style.display = 'none';
+  }
+});
+// --- Heures de code WakaTime ---
+async function fetchWakaTimeHours(username) {
+  try {
+    const el = document.getElementById('wakatime-hours');
+    const res = await fetch(`https://wakatime.com/api/v1/users/${username}/stats/last_year`);
+    const data = await res.json();
+    const hours = Math.round(data.data.total_hours || 0);
+    if (el) {
+      const card = el.closest('.stat-card');
+      if (hours > 0) {
+        el.setAttribute('data-target', hours);
+        el.textContent = hours;
+        if (card) card.style.display = '';
+      } else {
+        if (card) card.style.display = 'none';
+      }
+    }
+  } catch (e) {
+    console.warn('Erreur WakaTime:', e);
+  }
+}
 document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
 async function fetchGitHubStats() {
@@ -53,7 +82,8 @@ function updateStatElements(data) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-  fetchGitHubStats(); // (stats activées via API serverless)
+  fetchGitHubStats(); 
+  fetchWakaTimeHours('TiboTsr');
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
