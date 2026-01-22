@@ -1,6 +1,7 @@
+document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
+/*
 async function fetchGitHubStats() {
-
   const username = "TiboTsr";
   const cacheKey = "github_stats_cache";
   const cacheDuration = 24 * 60 * 60 * 1000; // 24 heures
@@ -89,7 +90,6 @@ async function fetchGitHubStats() {
   }
 }
 
-// Fonction utilitaire pour mettre à jour le HTML
 function updateStatElements(data) {
   const reposEl = document.getElementById('github-repos');
   const starsEl = document.getElementById('github-stars');
@@ -103,13 +103,12 @@ function updateStatElements(data) {
   const statNumbers = document.querySelectorAll('.stat-number');
   statNumbers.forEach(stat => animateCounter(stat));
 }
-// Bloquer le scroll immédiatement au chargement
-document.body.classList.add("no-scroll");
+*/
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-  // Appel des stats GitHub dynamiques (avec cache)
-  fetchGitHubStats();
+  // fetchGitHubStats(); // (stats désactivées temporairement)
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
