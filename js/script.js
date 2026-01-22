@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchWakaTimeHours(username) {
   try {
     const el = document.getElementById('wakatime-hours');
-    const res = await fetch(`https://wakatime.com/api/v1/users/${username}/stats/last_year`);
+    const res = await fetch('/api/wakatime');
     const data = await res.json();
-    const hours = Math.round(data.data.total_hours || 0);
+    const hours = data.hours || 0;
     if (el) {
       const card = el.closest('.stat-card');
       if (hours > 0) {
