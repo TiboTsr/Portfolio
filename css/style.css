@@ -1350,7 +1350,8 @@ html {
   font-size: 1.5rem;
   color: var(--text);
   margin-bottom: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .stage-note {
@@ -1368,6 +1369,8 @@ html {
 
 .experience-card p {
   color: var(--text-dim);
+  font-weight: 500;
+  letter-spacing: 0.1px;
   line-height: 1.8;
   margin-bottom: 20px;
 }
@@ -1378,6 +1381,8 @@ html {
   border-radius: 12px;
   border-left: 3px solid var(--primary);
   margin: 25px 0;
+  color: var(--primary) !important;
+  font-weight: 700 !important;
 }
 
 .stage-info {
