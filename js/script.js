@@ -1,8 +1,115 @@
+// --- Statistiques GitHub dynamiques avec cache localStorage ---
+async function fetchGitHubStats() {
+
+  const username = "TiboTsr";
+  const cacheKey = "github_stats_cache";
+  const cacheDuration = 24 * 60 * 60 * 1000; // 24 heures
+  const cachedData = localStorage.getItem(cacheKey);
+  const now = new Date().getTime();
+
+  // 1. Vérifier si on a des données fraîches en cache
+  if (cachedData) {
+    const cache = JSON.parse(cachedData);
+    if (now - cache.timestamp < cacheDuration) {
+      console.log("Stats récupérées depuis le cache local");
+      updateStatElements(cache.data);
+      return;
+    }
+  }
+
+  // 2. Sinon, faire l'appel API
+  try {
+    console.log("Appel API GitHub en cours...");
+    // Récupérer les repos et les stars (REST API)
+    const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+    const repos = await reposResponse.json();
+    const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+
+    if (typeof GITHUB_TOKEN === "undefined" || !GITHUB_TOKEN) {
+      console.warn("Aucun token GitHub détecté.");
+    }
+    const today = new Date();
+    const lastYear = new Date(today);
+    lastYear.setFullYear(today.getFullYear() - 1);
+    const from = lastYear.toISOString().slice(0, 10);
+    const to = today.toISOString().slice(0, 10);
+    const query = `
+      query {
+        user(login: \"${username}\") {
+          contributionsCollection(from: \"${from}T00:00:00Z\", to: \"${to}T23:59:59Z\") {
+            contributionCalendar {
+              totalContributions
+            }
+          }
+        }
+      }
+    `;
+    const graphqlResponse = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(typeof GITHUB_TOKEN !== "undefined" && GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {})
+      },
+      body: JSON.stringify({ query })
+    });
+    const graphqlData = await graphqlResponse.json();
+    let totalContributions = 0;
+    if (graphqlData?.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions !== undefined) {
+      totalContributions = graphqlData.data.user.contributionsCollection.contributionCalendar.totalContributions;
+    } else {
+      // Affiche l'erreur sur la page si possible
+      const commitsEl = document.getElementById('github-commits');
+      if (commitsEl) {
+        commitsEl.textContent = 'Erreur API';
+        commitsEl.style.color = 'red';
+      }
+      console.error("Erreur GraphQL:", graphqlData);
+    }
+
+    const stats = {
+      repos: repos.length,
+      stars: totalStars,
+      commits: totalContributions // On remplace "commits" par "contributions"
+    };
+
+    // 3. Sauvegarder dans le localStorage avec un timestamp
+    localStorage.setItem(cacheKey, JSON.stringify({
+      timestamp: now,
+      data: stats
+    }));
+
+    updateStatElements(stats);
+
+  } catch (error) {
+    console.error("Erreur API GitHub :", error);
+    // Si l'API échoue mais qu'on a un vieux cache, on l'utilise quand même
+    if (cachedData) {
+      updateStatElements(JSON.parse(cachedData).data);
+    }
+  }
+}
+
+// Fonction utilitaire pour mettre à jour le HTML
+function updateStatElements(data) {
+  const reposEl = document.getElementById('github-repos');
+  const starsEl = document.getElementById('github-stars');
+  const commitsEl = document.getElementById('github-commits');
+
+  if(reposEl) reposEl.setAttribute('data-target', data.repos);
+  if(starsEl) starsEl.setAttribute('data-target', data.stars);
+  if(commitsEl) commitsEl.setAttribute('data-target', data.commits);
+
+  // Lancer l'animation des compteurs
+  const statNumbers = document.querySelectorAll('.stat-number');
+  statNumbers.forEach(stat => animateCounter(stat));
+}
 // Bloquer le scroll immédiatement au chargement
 document.body.classList.add("no-scroll");
 
 document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  // Appel des stats GitHub dynamiques (avec cache)
+  fetchGitHubStats();
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
