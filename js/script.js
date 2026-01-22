@@ -1,8 +1,6 @@
 document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
-/*
 async function fetchGitHubStats() {
-  const username = "TiboTsr";
   const cacheKey = "github_stats_cache";
   const cacheDuration = 24 * 60 * 60 * 1000; // 24 heures
   const cachedData = localStorage.getItem(cacheKey);
@@ -18,71 +16,20 @@ async function fetchGitHubStats() {
     }
   }
 
-  // 2. Sinon, faire l'appel API
+  // 2. Sinon, faire l'appel à l'API serverless
   try {
-    console.log("Appel API GitHub en cours...");
-    // Récupérer les repos et les stars (REST API)
-    const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
-    const repos = await reposResponse.json();
-    const totalStars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
-
-    if (typeof GITHUB_TOKEN === "undefined" || !GITHUB_TOKEN) {
-      console.warn("Aucun token GitHub détecté.");
-    }
-    const today = new Date();
-    const lastYear = new Date(today);
-    lastYear.setFullYear(today.getFullYear() - 1);
-    const from = lastYear.toISOString().slice(0, 10);
-    const to = today.toISOString().slice(0, 10);
-    const query = `
-      query {
-        user(login: \"${username}\") {
-          contributionsCollection(from: \"${from}T00:00:00Z\", to: \"${to}T23:59:59Z\") {
-            contributionCalendar {
-              totalContributions
-            }
-          }
-        }
-      }
-    `;
-    const graphqlResponse = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(typeof GITHUB_TOKEN !== "undefined" && GITHUB_TOKEN ? { Authorization: `Bearer ${GITHUB_TOKEN}` } : {})
-      },
-      body: JSON.stringify({ query })
-    });
-    const graphqlData = await graphqlResponse.json();
-    let totalContributions = 0;
-    if (graphqlData?.data?.user?.contributionsCollection?.contributionCalendar?.totalContributions !== undefined) {
-      totalContributions = graphqlData.data.user.contributionsCollection.contributionCalendar.totalContributions;
-    } else {
-      // Affiche l'erreur sur la page si possible
-      const commitsEl = document.getElementById('github-commits');
-      if (commitsEl) {
-        commitsEl.textContent = 'Erreur API';
-        commitsEl.style.color = 'red';
-      }
-      console.error("Erreur GraphQL:", graphqlData);
-    }
-
-    const stats = {
-      repos: repos.length,
-      stars: totalStars,
-      commits: totalContributions // On remplace "commits" par "contributions"
-    };
-
+    console.log("Appel API GitHub (serverless) en cours...");
+    const response = await fetch("/api/github-stats");
+    if (!response.ok) throw new Error("Erreur API serverless");
+    const stats = await response.json();
     // 3. Sauvegarder dans le localStorage avec un timestamp
     localStorage.setItem(cacheKey, JSON.stringify({
       timestamp: now,
       data: stats
     }));
-
     updateStatElements(stats);
-
   } catch (error) {
-    console.error("Erreur API GitHub :", error);
+    console.error("Erreur API GitHub (serverless) :", error);
     // Si l'API échoue mais qu'on a un vieux cache, on l'utilise quand même
     if (cachedData) {
       updateStatElements(JSON.parse(cachedData).data);
@@ -103,12 +50,10 @@ function updateStatElements(data) {
   const statNumbers = document.querySelectorAll('.stat-number');
   statNumbers.forEach(stat => animateCounter(stat));
 }
-*/
-
 
 document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-  // fetchGitHubStats(); // (stats désactivées temporairement)
+  fetchGitHubStats(); // (stats activées via API serverless)
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
