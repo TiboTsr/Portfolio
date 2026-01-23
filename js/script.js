@@ -13,12 +13,16 @@ async function fetchWakaTimeHours(username) {
     const res = await fetch('/api/wakatime');
     const data = await res.json();
     const hours = data.hours || 0;
+
     if (el) {
       const card = el.closest('.stat-card');
       if (hours > 0) {
         el.setAttribute('data-target', hours);
-        el.textContent = hours;
-        if (card) card.style.display = '';
+        el.textContent = "0";
+        if (card) card.style.display = 'flex';
+        
+        animateCounter(el); 
+        
       } else {
         if (card) card.style.display = 'none';
       }
@@ -27,6 +31,7 @@ async function fetchWakaTimeHours(username) {
     console.warn('Erreur WakaTime:', e);
   }
 }
+
 document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
 async function fetchGitHubStats() {
