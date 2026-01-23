@@ -1,25 +1,36 @@
+// api/wakatime.js
 export default async function handler(req, res) {
   const username = "TiboTsr";
-  const url = `https://wakatime.com/api/v1/users/${username}/stats/last_7_days`;
+  const url = `https://wakatime.com/api/v1/users/${username}/stats/all_time`;
 
   try {
     const wakatimeRes = await fetch(url);
 
     if (!wakatimeRes.ok) {
-      console.error(`Erreur WakaTime: ${wakatimeRes.status}`);
-      return res.status(wakatimeRes.status).json({ error: 'WakaTime API error' });
+      console.warn(`All Time non disponible (${wakatimeRes.status}), tentative last_year...`);
+      
+      const fallbackUrl = `https://wakatime.com/api/v1/users/${username}/stats/last_year`;
+      const fallbackRes = await fetch(fallbackUrl);
+      
+      if (!fallbackRes.ok) {
+         return res.status(fallbackRes.status).json({ error: 'WakaTime API error' });
+      }
+      
+      const data = await fallbackRes.json();
+      return res.status(200).json({
+        hours: Math.round(data.data.total_hours || 0),
+        range: 'last_year' // On indique que c'est sur un an
+      });
     }
 
     const data = await wakatimeRes.json();
-
-    const totalSeconds = data.data.total_seconds || 0;
-    const hours = Math.round(totalSeconds / 3600);
-
     res.status(200).json({
-      hours: hours
+      hours: Math.round(data.data.total_hours || 0),
+      range: 'all_time'
     });
+
   } catch (e) {
-    console.error("Erreur serveur:", e);
+    console.error("Erreur Serveur:", e);
     res.status(500).json({ error: 'Server error', details: e.message });
   }
 }
