@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   const username = "TiboTsr";
   const apiKey = process.env.WAKATIME_API_KEY; 
-  const url = `https://wakatime.com/api/v1/users/${username}/stats/last_year`;
+  const url = `https://wakatime.com/api/v1/users/${username}/stats/last_7_days`;
 
   try {
     const token = Buffer.from(apiKey).toString('base64');
