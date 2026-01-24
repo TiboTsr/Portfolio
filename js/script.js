@@ -19,7 +19,7 @@ async function fetchWakaTimeHours(username) {
       if (hours > 0) {
         el.setAttribute('data-target', hours);
         el.textContent = "0";
-        if (card) card.style.display = 'unset';
+        if (card) card.style.display = '';
         
         animateCounter(el); 
         
