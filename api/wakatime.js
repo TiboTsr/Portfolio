@@ -17,15 +17,18 @@ export default async function handler(req, res) {
       }
       
       const data = await fallbackRes.json();
+      const totalSeconds = data.data.total_seconds || 0;
       return res.status(200).json({
-        hours: Math.round(data.data.total_hours || 0),
-        range: 'last_year' // On indique que c'est sur un an
+        hours: Math.round(totalSeconds / 3600),
+        range: 'last_year'
       });
     }
 
     const data = await wakatimeRes.json();
+    const totalSeconds = data.data.total_seconds || 0;
+    
     res.status(200).json({
-      hours: Math.round(data.data.total_hours || 0),
+      hours: Math.round(totalSeconds / 3600),
       range: 'all_time'
     });
 
