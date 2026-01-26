@@ -20,9 +20,10 @@ async function fetchWakaTimeHours(username) {
         el.setAttribute('data-target', hours);
         el.textContent = "0";
         if (card) card.style.display = '';
-        
+        if (window.AOS && typeof window.AOS.refresh === 'function') {
+          window.AOS.refresh();
+        }
         animateCounter(el); 
-        
       } else {
         if (card) card.style.display = 'none';
       }
