@@ -107,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const { fetchWakaTimeLanguages } = await import('./wakatime-langs.js');
       const langs = await fetchWakaTimeLanguages();
       if (!langs.length) {
-        ctx.parentNode.innerHTML = '<div style="display:none;></div>';
+        ctx.parentNode.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:2em 0;">Aucune donnée WakaTime disponible pour le graphique.</div>';
         return;
       }
       const labels = langs.map(l => l.name);
