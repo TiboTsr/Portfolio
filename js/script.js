@@ -91,55 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchGitHubStats(); 
   fetchWakaTimeHours('TiboTsr');
 
-    // --- Graphique WakaTime par langage ---
-  function loadChartJs(callback) {
-    if (window.Chart) return callback();
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-    script.onload = callback;
-    document.head.appendChild(script);
-  }
-
-  async function renderWakaTimeLangChart() {
-    const ctx = document.getElementById('wakatimeLangChart');
-    if (!ctx) return;
-    loadChartJs(async () => {
-      const { fetchWakaTimeLanguages } = await import('./wakatime-langs.js');
-      const langs = await fetchWakaTimeLanguages();
-      if (!langs.length) {
-        ctx.parentNode.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:2em 0;">Aucune donnée WakaTime disponible pour le graphique.</div>';
-        return;
-      }
-      const labels = langs.map(l => l.name);
-      const data = langs.map(l => Math.round(l.total_seconds / 3600 * 10) / 10); // heures arrondies
-      const bgColors = [
-        '#00f2ff','#7000ff','#ffb300','#ff5f56','#00c853','#ff4081','#7c4dff','#ffd600','#00bcd4','#ff1744','#c51162','#304ffe','#00e676','#ff9100','#d500f9'
-      ];
-      new window.Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels,
-          datasets: [{
-            data,
-            backgroundColor: bgColors,
-            borderWidth: 2,
-            borderColor: 'rgba(255,255,255,0.08)',
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { display: true, position: 'bottom', labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--text') } },
-            title: { display: true, text: 'Répartition du temps de code par langage (WakaTime)', color: getComputedStyle(document.documentElement).getPropertyValue('--text') }
-          },
-          responsive: true,
-          cutout: '60%',
-        }
-      });
-    });
-  }
-  renderWakaTimeLangChart();
-
-
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });
 
