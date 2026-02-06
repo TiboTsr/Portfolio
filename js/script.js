@@ -33,6 +33,83 @@ async function fetchWakaTimeHours(username) {
   }
 }
 
+async function fetchWakaTimeLanguages() {
+  try {
+    const res = await fetch('/api/wakatime-debug');
+    if (!res.ok) throw new Error('API WakaTime error');
+    const data = await res.json();
+    if (data.data && Array.isArray(data.data.languages)) {
+      return data.data.languages;
+    }
+    return [];
+  } catch (e) {
+    console.warn('Erreur WakaTime languages:', e);
+    return [];
+  }
+}
+
+function formatDurationFromSeconds(totalSeconds) {
+  const safeSeconds = Number.isFinite(totalSeconds) ? totalSeconds : 0;
+  const hours = Math.floor(safeSeconds / 3600);
+  const minutes = Math.round((safeSeconds % 3600) / 60);
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  return `${minutes}m`;
+}
+
+function renderWakaTimeLanguages(languages) {
+  const container = document.getElementById('wakatimeLangs');
+  const emptyState = document.getElementById('wakatimeLangsEmpty');
+  const card = document.getElementById('wakatimeLanguages');
+
+  if (!container || !emptyState || !card) return;
+
+  container.innerHTML = '';
+
+  const filtered = (languages || []).filter(lang => (lang.percent || 0) > 0);
+  const topLanguages = filtered.slice(0, 6);
+
+  if (topLanguages.length === 0) {
+    card.classList.remove('has-data');
+    emptyState.style.display = 'block';
+    container.style.display = 'none';
+    return;
+  }
+
+  card.classList.add('has-data');
+  emptyState.style.display = 'none';
+  container.style.display = 'grid';
+
+  topLanguages.forEach((lang) => {
+    const percentRaw = Number.isFinite(lang.percent) ? lang.percent : 0;
+    const percent = Math.max(0, Math.min(100, Math.round(percentRaw)));
+    const timeLabel = lang.text || formatDurationFromSeconds(lang.total_seconds);
+
+    const row = document.createElement('div');
+    row.className = 'lang-row';
+    row.innerHTML = `
+      <div class="lang-meta">
+        <span class="lang-name">${lang.name}</span>
+        <span class="lang-time">${timeLabel}</span>
+        <span class="lang-percent">${percent}%</span>
+      </div>
+      <div class="lang-bar">
+        <span class="lang-bar-fill"></span>
+      </div>
+    `;
+
+    const fill = row.querySelector('.lang-bar-fill');
+    if (fill) {
+      requestAnimationFrame(() => {
+        fill.style.width = `${percent}%`;
+      });
+    }
+
+    container.appendChild(row);
+  });
+}
+
 document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
 async function fetchGitHubStats() {
@@ -90,6 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
   fetchGitHubStats(); 
   fetchWakaTimeHours('TiboTsr');
+  fetchWakaTimeLanguages().then(renderWakaTimeLanguages);
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700 });

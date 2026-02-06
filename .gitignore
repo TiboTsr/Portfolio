@@ -3,3 +3,5 @@ README_DEPLOY.md
 .vscode/settings.json
 .vscode
 config.js
+.vercel
+.env*.local
