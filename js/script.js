@@ -165,12 +165,13 @@ function updateStatElements(data) {
 
 document.addEventListener("DOMContentLoaded", () => {
   const isTouchDevice = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  const isSmallScreen = window.matchMedia("(max-width: 768px)").matches;
   fetchGitHubStats(); 
   fetchWakaTimeHours('TiboTsr');
   fetchWakaTimeLanguages().then(renderWakaTimeLanguages);
 
   // 1. Initialisations
-  AOS.init({ mirror: true, duration: 700 });
+  AOS.init({ mirror: true, duration: 700, offset: isSmallScreen ? 60 : 120 });
 
   // 1b. Thème clair / sombre avec persistance
   const themeToggle = document.getElementById("themeToggle");
