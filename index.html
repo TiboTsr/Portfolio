@@ -230,6 +230,27 @@
       <span class="pre-title">Projets</span>
       <h2 id="startProjets">Mes Réalisations<span>.</span></h2>
     </div>
+    <div class="live-projects" data-aos="fade-up" data-aos-delay="100">
+      <div class="live-header">
+        <div class="live-title">
+          <h3>Projets en cours</h3>
+          <p>Dernieres activites synchronisees avec GitHub et mises a jour automatiquement.</p>
+        </div>
+        <div class="live-badge">
+          <i class="fas fa-satellite-dish"></i>
+          Live
+        </div>
+      </div>
+      <div class="live-grid" id="liveProjectsGrid"></div>
+      <div class="live-loading" id="liveProjectsLoading" role="status" aria-live="polite">
+        <span class="live-loading-spinner" aria-hidden="true"></span>
+        <p class="live-loading-text">Recuperation des donnees GitHub, cela peut prendre du temps...</p>
+        <div class="live-loading-bar" aria-hidden="true">
+          <span class="live-loading-bar-fill"></span>
+        </div>
+      </div>
+      <div class="live-empty" id="liveProjectsEmpty">Aucun projet en cours pour le moment.</div>
+    </div>
     <div class="projects-grid">
       <div class="project-card" data-aos="fade-up">
         <div class="card-icon"><i class="fas fa-recycle"></i></div>
@@ -265,6 +286,15 @@
         <p class="tech-tags">Python • SQL</p>
         <p>
           Avertit un serveur d'une nouvelle mise à jour des appareils Apple.
+        </p>
+        <button class="btn-detail">Voir plus</button>
+      </div>
+      <div class="project-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="card-icon"><i class="fab fa-apple"></i></div>
+        <h3>Calendrier ICS</h3>
+        <p class="tech-tags">Python • JSON • ICS</p>
+        <p>
+          Génération de calendriers pour Iphone/Google Agenda et autres, avec des exports par zones scolaires ou par profils thématiques.
         </p>
         <button class="btn-detail">Voir plus</button>
       </div>

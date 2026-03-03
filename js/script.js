@@ -110,6 +110,218 @@ function renderWakaTimeLanguages(languages) {
   });
 }
 
+function formatRelativeDate(isoString) {
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const now = Date.now();
+  const diffMs = now - date.getTime();
+  const absMs = Math.abs(diffMs);
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  const format = (value, unit) => {
+    const plural = value > 1 ? "s" : "";
+    return diffMs >= 0
+      ? `il y a ${value} ${unit}${plural}`
+      : `dans ${value} ${unit}${plural}`;
+  };
+
+  if (absMs < minute) return diffMs >= 0 ? "a l'instant" : "dans un instant";
+  if (absMs < hour) return format(Math.round(absMs / minute), "minute");
+  if (absMs < day) return format(Math.round(absMs / hour), "heure");
+  if (absMs < week) return format(Math.round(absMs / day), "jour");
+  if (absMs < month) return format(Math.round(absMs / week), "semaine");
+  if (absMs < year) return format(Math.round(absMs / month), "mois");
+  return format(Math.round(absMs / year), "an");
+}
+
+function toActivityLabel(value) {
+  if (!value) return null;
+  const relative = formatRelativeDate(value);
+  if (relative) return relative;
+  if (typeof value === "string" && value.trim()) return value.trim();
+  return null;
+}
+
+function getRepoInfo(repoUrl) {
+  try {
+    const url = new URL(repoUrl);
+    if (url.hostname !== "github.com") return null;
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (parts.length < 2) return null;
+    return { owner: parts[0], repo: parts[1].replace(/\.git$/, "") };
+  } catch (error) {
+    return null;
+  }
+}
+
+async function fetchRepoActivity(repoUrl, options = {}) {
+  const { skipPublicFallback = false } = options;
+  const info = getRepoInfo(repoUrl);
+  if (!info) return null;
+  try {
+    const query = new URLSearchParams({ repo: `${info.owner}/${info.repo}` });
+    const response = await fetch(`/api/github-repo-activity?${query.toString()}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.activity || typeof data.isPrivate === "boolean") {
+        return {
+          activity: data.activity || null,
+          isPrivate: typeof data.isPrivate === "boolean" ? data.isPrivate : null,
+        };
+      }
+    }
+  } catch (error) {
+    // Fallback handled below
+  }
+
+  if (skipPublicFallback) {
+    return { activity: null, isPrivate: true };
+  }
+
+  try {
+    const directResponse = await fetch(`https://api.github.com/repos/${info.owner}/${info.repo}`);
+    if (!directResponse.ok) return null;
+    const directData = await directResponse.json();
+    return {
+      activity: directData.pushed_at || directData.updated_at || null,
+      isPrivate: typeof directData.private === "boolean" ? directData.private : null,
+    };
+  } catch (error) {
+    return null;
+  }
+}
+
+let liveProjectsDataPromise = null;
+
+function getLiveProjectsData() {
+  if (liveProjectsDataPromise) return liveProjectsDataPromise;
+
+  liveProjectsDataPromise = (async () => {
+    const response = await fetch("data/projects-live.json");
+    if (!response.ok) throw new Error("Live projects fetch failed");
+    const data = await response.json();
+    const projects = Array.isArray(data.projects) ? data.projects : [];
+
+    const enriched = await Promise.all(
+      projects.map(async (project) => {
+        const repoUrl = project.repo || project.repoUrl || "";
+        const privateHint = project.private === true;
+        const repoMeta = repoUrl
+          ? await fetchRepoActivity(repoUrl, { skipPublicFallback: privateHint })
+          : null;
+        const repoActivity = repoMeta?.activity || null;
+        const manualActivity = project.lastActivity || project.updatedAt || project.date;
+
+        return {
+          name: project.name || "Projet",
+          description: project.description || "",
+          repoUrl,
+          isPrivate: typeof repoMeta?.isPrivate === "boolean"
+            ? repoMeta.isPrivate
+            : (typeof project.private === "boolean" ? project.private : null),
+          activityLabel: toActivityLabel(repoActivity) || toActivityLabel(manualActivity),
+        };
+      })
+    );
+
+    return enriched;
+  })();
+
+  return liveProjectsDataPromise;
+}
+
+async function loadLiveProjects() {
+  const container = document.getElementById("liveProjectsGrid");
+  const emptyState = document.getElementById("liveProjectsEmpty");
+  const loadingState = document.getElementById("liveProjectsLoading");
+  if (!container || !emptyState) return;
+
+  if (loadingState) loadingState.style.display = "grid";
+  emptyState.style.display = "none";
+  container.style.display = "none";
+
+  try {
+    const projects = await getLiveProjectsData();
+
+    if (loadingState) loadingState.style.display = "none";
+
+    if (projects.length === 0) {
+      emptyState.style.display = "block";
+      container.style.display = "none";
+      return;
+    }
+
+    container.innerHTML = "";
+    projects.forEach((project, index) => {
+      const card = document.createElement("article");
+      card.className = "live-card";
+      card.setAttribute("data-aos", "fade-up");
+      card.setAttribute("data-aos-delay", String(index * 80));
+
+      const title = document.createElement("h4");
+      title.textContent = project.name;
+
+      const desc = document.createElement("p");
+      desc.className = "live-desc";
+      desc.textContent = project.description;
+
+      const meta = document.createElement("div");
+      meta.className = "live-meta";
+
+      const activity = document.createElement("span");
+      activity.textContent = project.activityLabel
+        ? `Derniere activite: ${project.activityLabel}`
+        : "Derniere activite: inconnue";
+
+      meta.appendChild(activity);
+
+      if (project.repoUrl) {
+        const link = document.createElement("a");
+        link.className = "live-link";
+        if (project.isPrivate === true) {
+          link.classList.add("live-link-private");
+          link.dataset.tooltip = "Lien indisponible";
+          link.setAttribute("aria-label", "Lien indisponible (repo prive)");
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+          });
+        } else {
+          link.href = project.repoUrl;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.setAttribute("aria-label", "Voir le repo GitHub (repo public)");
+        }
+        link.innerHTML = '<i class="fab fa-github"></i>';
+        meta.appendChild(link);
+      }
+
+      card.appendChild(title);
+      card.appendChild(desc);
+      card.appendChild(meta);
+      container.appendChild(card);
+    });
+
+    emptyState.style.display = "none";
+    container.style.display = "grid";
+    if (window.AOS && typeof window.AOS.refresh === "function") {
+      window.AOS.refresh();
+    }
+  } catch (error) {
+    console.warn("Erreur projets live:", error);
+    if (loadingState) loadingState.style.display = "none";
+    emptyState.style.display = "block";
+    container.style.display = "none";
+  }
+}
+
+getLiveProjectsData().catch(() => null);
+
 document.body.classList.add("no-scroll");
 // --- Statistiques GitHub dynamiques avec cache localStorage ---
 async function fetchGitHubStats() {
@@ -169,6 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchGitHubStats(); 
   fetchWakaTimeHours('TiboTsr');
   fetchWakaTimeLanguages().then(renderWakaTimeLanguages);
+  loadLiveProjects();
 
   // 1. Initialisations
   AOS.init({ mirror: true, duration: 700, offset: isSmallScreen ? 60 : 120 });

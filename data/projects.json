@@ -79,5 +79,18 @@
       "./assets/images/AppleBot3.webp",
       "./assets/images/AppleBot4.webp"
     ]
+  },
+  "Calendrier ICS": {
+    "desc": "Génération de calendriers pour Iphone/Google Agenda et autres, avec des exports par zones scolaires ou par profils thématiques.",
+    "tech": ["Python", "JSON", "ICS"],
+    "points": [
+      "Récupération automatique des données via plusieurs APIs",
+      "Génération de calendriers ICS",
+      "Export par zones scolaires ou profils thématiques",
+      "Interface web pour personnaliser les calendriers"],
+    "link": "https://calendrier-fr.tibotsr.dev/",
+    "images": [
+      
+    ]
   }
 }

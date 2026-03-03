@@ -1,0 +1,18 @@
+{
+  "projects": [
+    {
+      "name": "Applebot",
+      "description": "Un bot Discord nommé qui notifie en temps réel les sorties de mises à jour Apple (iOS, macOS, etc.), incluant les versions bêta, RC et stables.",
+      "repo": "https://github.com/TiboTsr/applebot",
+      "private": true,
+      "lastActivity": ""
+    },
+    {
+      "name": "Calendrier ICS",
+      "description": "Une plateforme de génération de calendriers personnalisables pour la France, proposant des exports (ICS/JSON) par zones scolaires ou par profils thématiques (essentiel, culturel, commercial).",
+      "repo": "https://github.com/TiboTsr/calendrier-france-ics",
+      "private": false,
+      "lastActivity": ""
+    }
+  ]
+}
