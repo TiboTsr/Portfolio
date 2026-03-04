@@ -84,8 +84,51 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    const activity = data.pushed_at || data.updated_at || null;
     const isPrivate = Boolean(data.private);
+
+    let activity = data.pushed_at || data.updated_at || null;
+    
+    try {
+      const lastAuthHeader = authorizationCandidates.find(h => response.ok) || "";
+      const headers = { ...baseHeaders };
+      if (lastAuthHeader) {
+        headers.Authorization = lastAuthHeader;
+      }
+      
+      // Use events API to capture activity across all branches
+      const eventsResponse = await fetch(`https://api.github.com/repos/${repo}/events?per_page=30`, { headers });
+      
+      if (eventsResponse.ok) {
+        const events = await eventsResponse.json();
+        const botPatterns = [
+          /\[bot\]$/i,
+          /^dependabot/i,
+          /^github-actions/i,
+          /^renovate/i,
+          /^greenkeeper/i
+        ];
+        
+        const realEvent = events.find(event => {
+          if (event.type !== 'PushEvent') return false;
+          
+          const actorLogin = event?.actor?.login || "";
+          const actorName = event?.actor?.display_login || "";
+          
+          const isBot = botPatterns.some(pattern => 
+            pattern.test(actorLogin) || 
+            pattern.test(actorName)
+          );
+          
+          return !isBot;
+        });
+        
+        if (realEvent && realEvent.created_at) {
+          activity = realEvent.created_at;
+        }
+      }
+    } catch (error) {
+      // Fallback to pushed_at if events API fails
+    }
 
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({ activity, isPrivate });
