@@ -2,7 +2,7 @@
   "projects": [
     {
       "name": "Applebot",
-      "description": "Un bot Discord nommé qui notifie en temps réel les sorties de mises à jour Apple (iOS, macOS, etc.), incluant les versions bêta, RC et stables.",
+      "description": "Un bot Discord qui notifie en temps réel les sorties de mises à jour Apple (iOS, macOS, etc.), incluant les versions bêta, RC et stables.",
       "repo": "https://github.com/TiboTsr/applebot",
       "private": true,
       "lastActivity": ""
