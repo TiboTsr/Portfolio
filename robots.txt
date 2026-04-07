@@ -9,7 +9,4 @@ Allow: /assets/
 Allow: /css/
 Allow: /js/
 
-# Autoriser les fichiers importants
-Allow: /CV_Tibo_Tessier.pdf
-
 Sitemap: https://tibotsr.dev/sitemap.xml

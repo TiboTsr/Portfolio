@@ -48,14 +48,6 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- CV -->
-  <url>
-    <loc>https://tibotsr.dev/CV_Tibo_Tessier.pdf</loc>
-    <lastmod>2026-01-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Page 404 -->
   <url>
     <loc>https://tibotsr.dev/404.html</loc>
